@@ -91,6 +91,7 @@ body {
   line-height: var(--term-line-height);
   background: var(--term-bg);
   color: var(--term-fg);
+  text-shadow: 0 0 4px rgba(var(--term-glow-rgb), calc(var(--crt-glow-intensity) * 0.6));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -112,5 +113,13 @@ a:hover {
 @media (max-width: 768px) {
   :root {
     --term-font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
   }
 }

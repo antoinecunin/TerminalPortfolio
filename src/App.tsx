@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Terminal } from './components/Terminal/Terminal';
+import { CRTOverlay } from './components/CRTOverlay';
+import { BootSequence } from './components/BootSequence';
 import { useTerminalStore } from './store/terminalStore';
 import { uid } from './commands/registry';
 import { t } from './i18n/t';
@@ -17,6 +19,8 @@ const BANNER = [
 
 export default function App() {
   const theme = useTerminalStore((s) => s.theme);
+  const isBooting = useTerminalStore((s) => s.isBooting);
+  const setBooting = useTerminalStore((s) => s.setBooting);
   const addOutputBlock = useTerminalStore((s) => s.addOutputBlock);
 
   // Apply theme to root element
@@ -24,10 +28,10 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Welcome message on mount (ref guards against StrictMode double-fire)
+  // Welcome message fires once when boot completes
   const welcomed = useRef(false);
   useEffect(() => {
-    if (welcomed.current) return;
+    if (isBooting || welcomed.current) return;
     welcomed.current = true;
     addOutputBlock({
       id: uid(),
@@ -41,7 +45,19 @@ export default function App() {
         { id: uid(), text: '' },
       ],
     });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isBooting]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <Terminal />;
+  if (isBooting) {
+    return (
+      <CRTOverlay>
+        <BootSequence onComplete={() => setBooting(false)} />
+      </CRTOverlay>
+    );
+  }
+
+  return (
+    <CRTOverlay>
+      <Terminal />
+    </CRTOverlay>
+  );
 }
