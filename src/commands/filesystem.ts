@@ -3,7 +3,7 @@ import { VirtualFS } from '../filesystem/virtualFS';
 import { rootFS } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
-import type { CommandDefinition, CommandContext, CommandOutput } from '../types';
+import type { CommandDefinition, CommandContext, CommandOutput, OutputLine } from '../types';
 
 const fs = new VirtualFS(rootFS);
 
@@ -155,7 +155,7 @@ const cat: CommandDefinition = {
       for (const line of contentLines) {
         const htmlLine = linkify(line);
         if (htmlLine !== line) {
-          results.push({ id: uid(), text: htmlLine, isHtml: true });
+          results.push({ id: uid(), text: htmlLine, isHtml: true } as OutputLine);
         } else {
           results.push({ id: uid(), text: line });
         }
@@ -208,7 +208,7 @@ const tree: CommandDefinition = {
     const node = fs.resolve(target, cwd);
     const rootName = node ? node.name : target;
 
-    const lines = [
+    const lines: OutputLine[] = [
       { id: uid(), text: rootName + '/', className: 'highlight' },
       ...entries.map((e) => ({
         id: uid(),

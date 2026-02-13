@@ -12,7 +12,7 @@ export function Terminal() {
   const clearOutput = useTerminalStore((s) => s.clearOutput);
 
   const handleExecute = useCallback(
-    (input: string) => {
+    async (input: string) => {
       // Snapshot cwd/ssh BEFORE executing (cd will change cwd)
       const { cwd, sshSession } = useTerminalStore.getState();
 
@@ -35,7 +35,7 @@ export function Terminal() {
         return;
       }
 
-      const result = registry.execute(input);
+      const result = await registry.execute(input);
 
       addOutputBlock({
         id: uid(),

@@ -1,6 +1,7 @@
 import { registry, uid } from './registry';
 import { recommendations } from '../data/recommendations';
 import { t } from '../i18n/t';
+import { imageToAscii } from '../utils/imageToAscii';
 import type { CommandDefinition } from '../types';
 
 const finger: CommandDefinition = {
@@ -13,7 +14,7 @@ const finger: CommandDefinition = {
     recommendations
       .map((r) => r.id)
       .filter((id) => id.startsWith(partial)),
-  execute: (ctx) => {
+  execute: async (ctx) => {
     const name = ctx.args[0]?.toLowerCase();
 
     if (!name) {
@@ -67,7 +68,17 @@ const finger: CommandDefinition = {
       { id: uid(), text: '' },
     ];
 
-    // TODO: Phase 3 — ASCII art portrait will be inserted here
+    if (rec.photo) {
+      try {
+        const asciiLines = await imageToAscii(rec.photo, { width: 70 });
+        for (const line of asciiLines) {
+          lines.push({ id: uid(), text: `  ${line}`, className: 'dim' });
+        }
+        lines.push({ id: uid(), text: '' });
+      } catch {
+        // fallback silencieux — le témoignage s'affiche sans portrait
+      }
+    }
 
     for (const textLine of rec.text) {
       lines.push({ id: uid(), text: `  « ${textLine}` });

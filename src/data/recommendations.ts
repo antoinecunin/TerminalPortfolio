@@ -15,6 +15,7 @@ export const recommendations: Recommendation[] = [
     title: 'Ingénieur de recherche',
     relation: 'Encadrant',
     company: 'Application for Satellite Survey',
+    photo: '/img/recommendations/david_michea.png',
     text: [
       "J'ai encadré Antoine où il s'est distingué par sa curiosité,",
       "sa rigueur et une grande autonomie, notamment en concevant",
@@ -30,6 +31,7 @@ export const recommendations: Recommendation[] = [
     title: 'Étudiant',
     relation: 'Collaborateur',
     company: '',
+    photo: '/img/recommendations/ryan_gourdon.png',
     text: [
       "J'ai eu l'occasion de collaborer avec Antoine Cunin, et je",
       "peux dire qu'il est un excellent développeur. Antoine se",

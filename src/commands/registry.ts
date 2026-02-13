@@ -25,7 +25,7 @@ class CommandRegistry {
     );
   }
 
-  execute(input: string): CommandOutput {
+  async execute(input: string): Promise<CommandOutput> {
     const parsed = parseCommand(input);
     if (!parsed.command) {
       return { lines: [] };

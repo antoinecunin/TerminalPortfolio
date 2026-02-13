@@ -38,7 +38,7 @@ export interface CommandDefinition {
   description: string;
   usage: string;
   category: CommandCategory;
-  execute: (ctx: CommandContext) => CommandOutput;
+  execute: (ctx: CommandContext) => CommandOutput | Promise<CommandOutput>;
   /** Custom argument autocompletion. Returns matching completions for the partial arg. */
   completeArgs?: (partial: string) => string[];
 }

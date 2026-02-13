@@ -4,6 +4,17 @@ import { useTerminalStore } from './store/terminalStore';
 import { uid } from './commands/registry';
 import { t } from './i18n/t';
 
+const BANNER = [
+  '  _   _  _ _____ ___  ___ _  _ ___',
+  ' /_\\ | \\| |_   _/ _ \\|_ _| \\| | __|',
+  '/ _ \\| .` | | || (_) || || .` | _|',
+  '\\_/ \\_\\_|\\_| |_| \\___/|___|_|\\_|___|',
+  '  ___ _   _ _  _ ___ _  _',
+  ' / __| | | | \\| |_ _| \\| |',
+  '| (__| |_| | .` || || .` |',
+  ' \\___|\\___/|_|\\_|___|_|\\_|',
+];
+
 export default function App() {
   const theme = useTerminalStore((s) => s.theme);
   const addOutputBlock = useTerminalStore((s) => s.addOutputBlock);
@@ -22,7 +33,9 @@ export default function App() {
       id: uid(),
       lines: [
         { id: uid(), text: '' },
-        { id: uid(), text: `  ${t('welcome.title')}`, className: 'highlight' },
+        ...BANNER.map((line) => ({ id: uid(), text: `  ${line}`, className: 'highlight' })),
+        { id: uid(), text: '' },
+        { id: uid(), text: `  ${t('welcome.title')}`, className: 'dim' },
         { id: uid(), text: '' },
         { id: uid(), text: `  ${t('welcome.hint')}`, className: 'dim' },
         { id: uid(), text: '' },
