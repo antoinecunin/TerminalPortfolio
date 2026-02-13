@@ -18,7 +18,7 @@ export function TerminalOutput() {
         <div key={block.id} className={styles.block}>
           {block.command !== undefined && (
             <div className={styles.commandLine}>
-              <Prompt />
+              <Prompt cwd={block.cwd} sshSession={block.sshSession} />
               <span>{block.command}</span>
             </div>
           )}

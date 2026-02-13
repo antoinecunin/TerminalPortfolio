@@ -13,12 +13,16 @@ export function Terminal() {
 
   const handleExecute = useCallback(
     (input: string) => {
+      // Snapshot cwd/ssh BEFORE executing (cd will change cwd)
+      const { cwd, sshSession } = useTerminalStore.getState();
+
       if (!input) {
-        // Empty enter: show prompt line with no output
         addOutputBlock({
           id: uid(),
           lines: [],
           command: '',
+          cwd,
+          sshSession,
         });
         return;
       }
@@ -37,15 +41,31 @@ export function Terminal() {
         id: uid(),
         lines: result.lines,
         command: input,
+        cwd,
+        sshSession,
       });
     },
     [addOutputBlock, addToHistory, clearOutput]
   );
 
+  const handleShowCompletions = useCallback(
+    (matches: string[]) => {
+      addOutputBlock({
+        id: uid(),
+        lines: matches.map((m) => ({
+          id: uid(),
+          text: `  ${m}`,
+          className: m.endsWith('/') ? 'highlight' : undefined,
+        })),
+      });
+    },
+    [addOutputBlock]
+  );
+
   return (
     <div className={styles.terminal}>
       <TerminalOutput />
-      <TerminalInput onExecute={handleExecute} />
+      <TerminalInput onExecute={handleExecute} onShowCompletions={handleShowCompletions} />
     </div>
   );
 }

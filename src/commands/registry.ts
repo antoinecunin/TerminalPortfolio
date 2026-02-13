@@ -1,4 +1,4 @@
-import type { CommandDefinition, CommandOutput, CommandContext, OutputLine } from '../types';
+import type { CommandDefinition, CommandOutput, CommandContext } from '../types';
 import { parseCommand } from '../utils/parseCommand';
 
 let idCounter = 0;

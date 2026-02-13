@@ -12,6 +12,9 @@ export interface OutputBlock {
   id: string;
   lines: OutputLine[];
   command?: string;
+  /** Snapshot of cwd at execution time (for displaying the correct prompt) */
+  cwd?: string;
+  sshSession?: string | null;
 }
 
 export type Theme = 'green' | 'amber' | 'blue';
@@ -36,4 +39,6 @@ export interface CommandDefinition {
   usage: string;
   category: CommandCategory;
   execute: (ctx: CommandContext) => CommandOutput;
+  /** Custom argument autocompletion. Returns matching completions for the partial arg. */
+  completeArgs?: (partial: string) => string[];
 }

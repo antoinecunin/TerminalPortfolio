@@ -1,26 +1,42 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTerminalStore } from '../../store/terminalStore';
-import { registry } from '../../commands';
+import { registry } from '../../commands/registry';
+import { VirtualFS } from '../../filesystem/virtualFS';
+import { rootFS } from '../../filesystem/content';
 import { Prompt } from './Prompt';
 import styles from './TerminalInput.module.css';
 
+const fs = new VirtualFS(rootFS);
+
+const TAB_DOUBLE_DELAY = 400; // ms to detect double-tab
+
 interface TerminalInputProps {
   onExecute: (command: string) => void;
+  onShowCompletions: (matches: string[]) => void;
 }
 
-export function TerminalInput({ onExecute }: TerminalInputProps) {
+export function TerminalInput({ onExecute, onShowCompletions }: TerminalInputProps) {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const lastTabRef = useRef(0);
   const commandHistory = useTerminalStore((s) => s.commandHistory);
   const historyIndex = useTerminalStore((s) => s.historyIndex);
   const setHistoryIndex = useTerminalStore((s) => s.setHistoryIndex);
+  const cwd = useTerminalStore((s) => s.cwd);
 
-  // Auto-focus on mount and when clicking anywhere
+  // Auto-focus on mount and when clicking anywhere (unless selecting text)
   useEffect(() => {
-    const focus = () => inputRef.current?.focus();
-    focus();
-    document.addEventListener('click', focus);
-    return () => document.removeEventListener('click', focus);
+    inputRef.current?.focus();
+    const handleMouseUp = () => {
+      // Delay to let the browser finalize the selection
+      setTimeout(() => {
+        const selection = window.getSelection();
+        if (selection && selection.toString().length > 0) return;
+        inputRef.current?.focus();
+      }, 0);
+    };
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => document.removeEventListener('mouseup', handleMouseUp);
   }, []);
 
   const handleKeyDown = useCallback(
@@ -62,19 +78,72 @@ export function TerminalInput({ onExecute }: TerminalInputProps) {
         case 'Tab': {
           e.preventDefault();
           if (!value) break;
-          const matches = registry.autocomplete(value.toLowerCase());
+
+          const now = Date.now();
+          const isDoubleTab = now - lastTabRef.current < TAB_DOUBLE_DELAY;
+          lastTabRef.current = now;
+
+          // Determine if we're completing a command or a path
+          const spaceIndex = value.indexOf(' ');
+          const isCompletingCommand = spaceIndex === -1;
+
+          let matches: string[];
+
+          if (isCompletingCommand) {
+            // Complete command names
+            matches = registry.autocomplete(value.toLowerCase());
+          } else {
+            // Complete arguments — check if command has custom completer
+            const cmdName = value.slice(0, spaceIndex).toLowerCase();
+            const cmdDef = registry.resolve(cmdName);
+            const partial = value.slice(spaceIndex + 1);
+
+            if (cmdDef?.completeArgs) {
+              const argMatches = cmdDef.completeArgs(partial);
+              matches = argMatches.map((m) => value.slice(0, spaceIndex + 1) + m);
+            } else {
+              // Default: filesystem path completion
+              const pathMatches = fs.completePath(partial, cwd);
+              matches = pathMatches.map((m) => value.slice(0, spaceIndex + 1) + m);
+            }
+          }
+
+          if (matches.length === 0) break;
+
           if (matches.length === 1) {
-            setValue(matches[0] + ' ');
-          } else if (matches.length > 1) {
-            // Find common prefix
-            let prefix = matches[0];
-            for (const match of matches) {
+            // Single match — complete immediately
+            const completed = matches[0];
+            // Add space after if it's a command or a file (not a directory ending with /)
+            const suffix = completed.endsWith('/') ? '' : ' ';
+            setValue(completed + suffix);
+          } else {
+            // Multiple matches — find common prefix and complete to it
+            const completionParts = isCompletingCommand
+              ? matches
+              : matches.map((m) => m.slice(spaceIndex + 1));
+            const inputPart = isCompletingCommand
+              ? value
+              : value.slice(spaceIndex + 1);
+
+            let prefix = completionParts[0];
+            for (const match of completionParts) {
               while (!match.startsWith(prefix)) {
                 prefix = prefix.slice(0, -1);
               }
             }
-            if (prefix.length > value.length) {
-              setValue(prefix);
+
+            if (prefix.length > inputPart.length) {
+              // Can extend — do it on first Tab
+              const newValue = isCompletingCommand
+                ? prefix
+                : value.slice(0, spaceIndex + 1) + prefix;
+              setValue(newValue);
+            } else if (isDoubleTab) {
+              // Double Tab — show all possibilities
+              const displayNames = isCompletingCommand
+                ? matches
+                : matches.map((m) => m.slice(spaceIndex + 1));
+              onShowCompletions(displayNames);
             }
           }
           break;
@@ -91,6 +160,11 @@ export function TerminalInput({ onExecute }: TerminalInputProps) {
 
         case 'c': {
           if (e.ctrlKey) {
+            const selection = window.getSelection();
+            if (selection && selection.toString().length > 0) {
+              // Let browser handle native copy
+              break;
+            }
             e.preventDefault();
             setValue('');
           }
@@ -98,7 +172,7 @@ export function TerminalInput({ onExecute }: TerminalInputProps) {
         }
       }
     },
-    [value, commandHistory, historyIndex, setHistoryIndex, onExecute]
+    [value, commandHistory, historyIndex, setHistoryIndex, onExecute, onShowCompletions, cwd]
   );
 
   return (

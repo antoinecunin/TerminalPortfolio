@@ -1,0 +1,86 @@
+import { registry, uid } from './registry';
+import { recommendations } from '../data/recommendations';
+import { t } from '../i18n/t';
+import type { CommandDefinition } from '../types';
+
+const finger: CommandDefinition = {
+  name: 'finger',
+  aliases: [],
+  description: 'Display testimonials',
+  usage: 'finger [name]',
+  category: 'info',
+  completeArgs: (partial) =>
+    recommendations
+      .map((r) => r.id)
+      .filter((id) => id.startsWith(partial)),
+  execute: (ctx) => {
+    const name = ctx.args[0]?.toLowerCase();
+
+    if (!name) {
+      // List available people
+      const lines = [
+        { id: uid(), text: '' },
+        { id: uid(), text: `  ${t('finger.available')}`, className: 'highlight' },
+        { id: uid(), text: '' },
+      ];
+
+      for (const rec of recommendations) {
+        lines.push({
+          id: uid(),
+          text: `  finger ${rec.id.padEnd(20)} — ${rec.name} (${rec.title})`,
+        });
+      }
+
+      lines.push({ id: uid(), text: '' });
+      return { lines };
+    }
+
+    const rec = recommendations.find(
+      (r) => r.id === name || r.name.toLowerCase().includes(name)
+    );
+
+    if (!rec) {
+      return {
+        lines: [
+          {
+            id: uid(),
+            text: `  finger: '${name}': ${t('finger.unknown_user')}`,
+            className: 'error',
+          },
+          { id: uid(), text: '' },
+          {
+            id: uid(),
+            text: `  ${t('finger.available_list')} : ${recommendations.map((r) => r.id).join(', ')}`,
+            className: 'dim',
+          },
+        ],
+      };
+    }
+
+    const lines = [
+      { id: uid(), text: '' },
+      { id: uid(), text: `  ── ${rec.name} ──`, className: 'highlight' },
+      { id: uid(), text: `  ${rec.title} — ${rec.relation}`, className: 'bright' },
+      ...(rec.company
+        ? [{ id: uid(), text: `  ${rec.company}`, className: 'dim' }]
+        : []),
+      { id: uid(), text: '' },
+    ];
+
+    // TODO: Phase 3 — ASCII art portrait will be inserted here
+
+    for (const textLine of rec.text) {
+      lines.push({ id: uid(), text: `  « ${textLine}` });
+    }
+
+    // Close quote on last line
+    const lastIdx = lines.length - 1;
+    lines[lastIdx] = { ...lines[lastIdx], text: lines[lastIdx].text + ' »' };
+
+    lines.push({ id: uid(), text: '' });
+
+    return { lines };
+  },
+};
+
+registry.register(finger);
