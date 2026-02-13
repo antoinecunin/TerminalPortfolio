@@ -1,0 +1,26 @@
+.line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 1lh;
+}
+
+.error {
+  color: var(--term-error);
+}
+
+.dim {
+  color: var(--term-fg-dim);
+}
+
+.bright {
+  color: var(--term-fg-bright);
+}
+
+.highlight {
+  color: var(--term-highlight);
+  font-weight: 700;
+}
+
+.warning {
+  color: var(--term-warning);
+}

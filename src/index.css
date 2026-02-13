@@ -1,0 +1,116 @@
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Green theme (default) */
+  --term-bg: #0a0a0a;
+  --term-fg: #33ff33;
+  --term-fg-dim: #1a8c1a;
+  --term-fg-bright: #66ff66;
+  --term-prompt: #33ff33;
+  --term-error: #ff3333;
+  --term-warning: #ffaa33;
+  --term-highlight: #33ffff;
+  --term-link: #33ffff;
+  --term-selection: rgba(51, 255, 51, 0.2);
+  --term-glow-rgb: 51, 255, 51;
+
+  /* Typography */
+  --term-font: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --term-font-size: 14px;
+  --term-line-height: 1.6;
+
+  /* CRT effects */
+  --crt-scanline-opacity: 0.08;
+  --crt-glow-intensity: 0.5;
+  --crt-flicker-intensity: 0.02;
+}
+
+/* Amber theme */
+[data-theme="amber"] {
+  --term-fg: #ffb000;
+  --term-fg-dim: #8c6000;
+  --term-fg-bright: #ffd966;
+  --term-prompt: #ffb000;
+  --term-highlight: #ffe066;
+  --term-link: #ffe066;
+  --term-selection: rgba(255, 176, 0, 0.2);
+  --term-glow-rgb: 255, 176, 0;
+}
+
+/* Blue theme */
+[data-theme="blue"] {
+  --term-fg: #00bfff;
+  --term-fg-dim: #006080;
+  --term-fg-bright: #66d9ff;
+  --term-prompt: #00bfff;
+  --term-highlight: #66d9ff;
+  --term-link: #66d9ff;
+  --term-selection: rgba(0, 191, 255, 0.2);
+  --term-glow-rgb: 0, 191, 255;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--term-font);
+  font-size: var(--term-font-size);
+  line-height: var(--term-line-height);
+  background: var(--term-bg);
+  color: var(--term-fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--term-selection);
+  color: var(--term-fg-bright);
+}
+
+a {
+  color: var(--term-link);
+  text-decoration: underline;
+}
+
+a:hover {
+  color: var(--term-fg-bright);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --term-font-size: 16px;
+  }
+}

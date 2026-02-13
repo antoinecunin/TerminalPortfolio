@@ -1,0 +1,28 @@
+.prompt {
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.user {
+  color: var(--term-fg-bright);
+}
+
+.at {
+  color: var(--term-fg-dim);
+}
+
+.host {
+  color: var(--term-fg-bright);
+}
+
+.colon {
+  color: var(--term-fg-dim);
+}
+
+.path {
+  color: var(--term-highlight);
+}
+
+.dollar {
+  color: var(--term-fg);
+}

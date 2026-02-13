@@ -1,0 +1,23 @@
+.inputLine {
+  display: flex;
+  align-items: center;
+  padding: 0 16px 16px;
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--term-fg);
+  font-family: var(--term-font);
+  font-size: var(--term-font-size);
+  line-height: var(--term-line-height);
+  caret-color: var(--term-fg);
+  caret-shape: block;
+}
+
+.input::selection {
+  background: var(--term-selection);
+}
