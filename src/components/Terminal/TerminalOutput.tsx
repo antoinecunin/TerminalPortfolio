@@ -12,8 +12,19 @@ export function TerminalOutput() {
     bottomRef.current?.scrollIntoView({ behavior: 'instant' });
   }, [outputBlocks]);
 
+  // Scroll to bottom when virtual keyboard appears/disappears
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const scrollToBottom = () => {
+      bottomRef.current?.scrollIntoView({ behavior: 'instant' });
+    };
+    vv.addEventListener('resize', scrollToBottom);
+    return () => vv.removeEventListener('resize', scrollToBottom);
+  }, []);
+
   return (
-    <div className={styles.output}>
+    <div className={styles.output} role="log" aria-live="polite" aria-label="Terminal output">
       {outputBlocks.map((block) => (
         <div key={block.id} className={styles.block}>
           {block.command !== undefined && (

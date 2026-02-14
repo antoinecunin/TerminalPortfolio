@@ -28,6 +28,18 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  // Resize root to visual viewport (handles virtual keyboard on mobile)
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      document.documentElement.style.setProperty('--app-height', `${vv.height}px`);
+    };
+    update();
+    vv.addEventListener('resize', update);
+    return () => vv.removeEventListener('resize', update);
+  }, []);
+
   // Welcome message fires once when boot completes
   const welcomed = useRef(false);
   useEffect(() => {

@@ -1,6 +1,7 @@
 .output {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 16px;
   scrollbar-width: thin;
   scrollbar-color: var(--term-fg-dim) transparent;
@@ -29,4 +30,10 @@
   gap: 0;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .output {
+    padding: 8px;
+  }
 }

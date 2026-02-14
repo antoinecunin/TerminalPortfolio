@@ -3,6 +3,7 @@ import { recommendations } from '../data/recommendations';
 import { l } from '../i18n/l';
 import { t } from '../i18n/t';
 import { imageToAscii } from '../utils/imageToAscii';
+import { getTerminalColumns } from '../utils/terminalColumns';
 import type { CommandDefinition } from '../types';
 
 const finger: CommandDefinition = {
@@ -70,14 +71,17 @@ const finger: CommandDefinition = {
     ];
 
     if (rec.photo) {
-      try {
-        const asciiLines = await imageToAscii(rec.photo, { width: 70 });
-        for (const line of asciiLines) {
-          lines.push({ id: uid(), text: `  ${line}`, className: 'dim' });
+      const cols = Math.min(70, getTerminalColumns() - 2);
+      if (cols >= 50) {
+        try {
+          const asciiLines = await imageToAscii(rec.photo, { width: cols });
+          for (const line of asciiLines) {
+            lines.push({ id: uid(), text: `  ${line}`, className: 'dim' });
+          }
+          lines.push({ id: uid(), text: '' });
+        } catch {
+          // fallback silencieux — le témoignage s'affiche sans portrait
         }
-        lines.push({ id: uid(), text: '' });
-      } catch {
-        // fallback silencieux — le témoignage s'affiche sans portrait
       }
     }
 

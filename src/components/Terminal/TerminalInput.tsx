@@ -23,13 +23,13 @@ export function TerminalInput({ onExecute, onShowCompletions }: TerminalInputPro
 
   // Auto-focus on mount and when clicking anywhere (unless selecting text)
   useEffect(() => {
-    inputRef.current?.focus();
+    inputRef.current?.focus({ preventScroll: true });
     const handleMouseUp = () => {
       // Delay to let the browser finalize the selection
       setTimeout(() => {
         const selection = window.getSelection();
         if (selection && selection.toString().length > 0) return;
-        inputRef.current?.focus();
+        inputRef.current?.focus({ preventScroll: true });
       }, 0);
     };
     document.addEventListener('mouseup', handleMouseUp);

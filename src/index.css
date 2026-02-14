@@ -79,8 +79,14 @@
   padding: 0;
 }
 
-html, body, #root {
+html, body {
   height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+#root {
+  height: var(--app-height, 100%);
   width: 100%;
   overflow: hidden;
 }
@@ -113,6 +119,9 @@ a:hover {
 @media (max-width: 768px) {
   :root {
     --term-font-size: 16px;
+    --crt-scanline-opacity: 0.04;
+    --crt-glow-intensity: 0.25;
+    --crt-flicker-intensity: 0.01;
   }
 }
 

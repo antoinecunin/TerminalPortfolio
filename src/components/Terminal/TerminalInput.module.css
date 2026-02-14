@@ -22,3 +22,9 @@
 .input::selection {
   background: var(--term-selection);
 }
+
+@media (max-width: 768px) {
+  .inputLine {
+    padding: 0 8px 8px;
+  }
+}

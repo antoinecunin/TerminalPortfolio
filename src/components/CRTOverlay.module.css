@@ -41,3 +41,9 @@
   0%, 100% { opacity: 1; }
   50% { opacity: calc(1 - var(--crt-flicker-intensity)); }
 }
+
+@media (max-width: 768px) {
+  .crt {
+    box-shadow: inset 0 0 40px rgba(var(--term-glow-rgb), 0.02);
+  }
+}
