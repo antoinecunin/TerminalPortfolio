@@ -1,5 +1,6 @@
 import type { CommandDefinition, CommandOutput, CommandContext } from '../types';
 import { parseCommand } from '../utils/parseCommand';
+import { t } from '../i18n/t';
 
 let idCounter = 0;
 export function uid(): string {
@@ -37,7 +38,7 @@ class CommandRegistry {
         lines: [
           {
             id: uid(),
-            text: `bash: ${parsed.command}: command not found`,
+            text: `bash: ${parsed.command}: ${t('cmd.not_found')}`,
             className: 'error',
           },
         ],

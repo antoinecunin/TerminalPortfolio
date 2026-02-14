@@ -2,6 +2,7 @@ import { registry, uid } from './registry';
 import { experiences } from '../data/experience';
 import { education } from '../data/education';
 import { projects } from '../data/projects';
+import { l } from '../i18n/l';
 import { t } from '../i18n/t';
 import type { CommandDefinition, OutputLine } from '../types';
 
@@ -9,19 +10,19 @@ const PAGES: Record<string, () => OutputLine[]> = {
   experience: () => {
     const lines: OutputLine[] = [
       { id: uid(), text: '' },
-      { id: uid(), text: '  EXPERIENCE(7) — Expérience professionnelle', className: 'highlight' },
+      { id: uid(), text: `  ${t('man.header_experience')}`, className: 'highlight' },
       { id: uid(), text: '' },
     ];
 
     for (const exp of experiences) {
       lines.push({
         id: uid(),
-        text: `  ── ${exp.title} ──`,
+        text: `  ── ${l(exp.title)} ──`,
         className: 'bright',
       });
-      lines.push({ id: uid(), text: `  ${exp.company} | ${exp.period}` });
+      lines.push({ id: uid(), text: `  ${exp.company} | ${l(exp.period)}` });
       lines.push({ id: uid(), text: '' });
-      for (const desc of exp.description) {
+      for (const desc of l(exp.description)) {
         lines.push({ id: uid(), text: `  ${desc}` });
       }
       lines.push({ id: uid(), text: '' });
@@ -33,19 +34,19 @@ const PAGES: Record<string, () => OutputLine[]> = {
   education: () => {
     const lines: OutputLine[] = [
       { id: uid(), text: '' },
-      { id: uid(), text: '  EDUCATION(7) — Formation', className: 'highlight' },
+      { id: uid(), text: `  ${t('man.header_education')}`, className: 'highlight' },
       { id: uid(), text: '' },
     ];
 
     for (const edu of education) {
       lines.push({
         id: uid(),
-        text: `  ── ${edu.degree} ──`,
+        text: `  ── ${l(edu.degree)} ──`,
         className: 'bright',
       });
-      lines.push({ id: uid(), text: `  ${edu.institution} | ${edu.period}` });
+      lines.push({ id: uid(), text: `  ${edu.institution} | ${l(edu.period)}` });
       lines.push({ id: uid(), text: '' });
-      for (const desc of edu.description) {
+      for (const desc of l(edu.description)) {
         lines.push({ id: uid(), text: `  ${desc}` });
       }
       lines.push({ id: uid(), text: '' });
@@ -57,7 +58,7 @@ const PAGES: Record<string, () => OutputLine[]> = {
   projects: () => {
     const lines: OutputLine[] = [
       { id: uid(), text: '' },
-      { id: uid(), text: '  PROJECTS(7) — Projets', className: 'highlight' },
+      { id: uid(), text: `  ${t('man.header_projects')}`, className: 'highlight' },
       { id: uid(), text: '' },
     ];
 
@@ -68,15 +69,15 @@ const PAGES: Record<string, () => OutputLine[]> = {
         className: 'bright',
       });
       lines.push({ id: uid(), text: '' });
-      for (const desc of proj.description) {
+      for (const desc of l(proj.description)) {
         lines.push({ id: uid(), text: `  ${desc}` });
       }
       lines.push({ id: uid(), text: '' });
-      lines.push({ id: uid(), text: `  Contexte : ${proj.context}` });
+      lines.push({ id: uid(), text: `  ${t('label.context')} : ${l(proj.context)}` });
       if (proj.hasLaunch) {
         lines.push({
           id: uid(),
-          text: `  Lancer   : ssh ${proj.id}@antoinecunin.fr`,
+          text: `  ${t('label.launch')}   : ssh ${proj.id}@antoinecunin.fr`,
           className: 'highlight',
         });
       }

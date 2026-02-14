@@ -1,12 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTerminalStore } from '../../store/terminalStore';
 import { registry } from '../../commands/registry';
-import { VirtualFS } from '../../filesystem/virtualFS';
-import { rootFS } from '../../filesystem/content';
+import { fs } from '../../filesystem/content';
 import { Prompt } from './Prompt';
 import styles from './TerminalInput.module.css';
-
-const fs = new VirtualFS(rootFS);
 
 const TAB_DOUBLE_DELAY = 400; // ms to detect double-tab
 

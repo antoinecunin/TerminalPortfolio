@@ -1,5 +1,6 @@
 import { registry, uid } from './registry';
 import { recommendations } from '../data/recommendations';
+import { l } from '../i18n/l';
 import { t } from '../i18n/t';
 import { imageToAscii } from '../utils/imageToAscii';
 import type { CommandDefinition } from '../types';
@@ -28,7 +29,7 @@ const finger: CommandDefinition = {
       for (const rec of recommendations) {
         lines.push({
           id: uid(),
-          text: `  finger ${rec.id.padEnd(20)} — ${rec.name} (${rec.title})`,
+          text: `  finger ${rec.id.padEnd(20)} — ${rec.name} (${l(rec.title)})`,
         });
       }
 
@@ -61,7 +62,7 @@ const finger: CommandDefinition = {
     const lines = [
       { id: uid(), text: '' },
       { id: uid(), text: `  ── ${rec.name} ──`, className: 'highlight' },
-      { id: uid(), text: `  ${rec.title} — ${rec.relation}`, className: 'bright' },
+      { id: uid(), text: `  ${l(rec.title)} — ${l(rec.relation)}`, className: 'bright' },
       ...(rec.company
         ? [{ id: uid(), text: `  ${rec.company}`, className: 'dim' }]
         : []),
@@ -80,7 +81,8 @@ const finger: CommandDefinition = {
       }
     }
 
-    for (const textLine of rec.text) {
+    const textLines = l(rec.text);
+    for (const textLine of textLines) {
       lines.push({ id: uid(), text: `  « ${textLine}` });
     }
 

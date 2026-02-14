@@ -1,6 +1,18 @@
 import { create } from 'zustand';
 import type { OutputBlock, Theme, Locale } from '../types';
 
+const LOCALE_KEY = 'terminal-locale';
+
+function detectLocale(): Locale {
+  const stored = localStorage.getItem(LOCALE_KEY);
+  if (stored && ['fr', 'en', 'de'].includes(stored)) return stored as Locale;
+
+  const lang = navigator.language.split('-')[0].toLowerCase();
+  if (lang === 'fr') return 'fr';
+  if (lang === 'de') return 'de';
+  return 'en';
+}
+
 interface TerminalState {
   // Output
   outputBlocks: OutputBlock[];
@@ -60,8 +72,11 @@ export const useTerminalStore = create<TerminalState>((set) => ({
   // Settings
   theme: 'green',
   setTheme: (theme) => set({ theme }),
-  locale: 'fr',
-  setLocale: (locale) => set({ locale }),
+  locale: detectLocale(),
+  setLocale: (locale) => {
+    localStorage.setItem(LOCALE_KEY, locale);
+    set({ locale });
+  },
 
   // Boot
   isBooting: true,

@@ -20,6 +20,9 @@ export interface OutputBlock {
 export type Theme = 'green' | 'amber' | 'blue';
 export type Locale = 'fr' | 'en' | 'de';
 
+export type LocalizedString = Record<Locale, string>;
+export type LocalizedArray = Record<Locale, string[]>;
+
 export type CommandCategory = 'navigation' | 'info' | 'system' | 'action';
 
 export interface CommandContext {

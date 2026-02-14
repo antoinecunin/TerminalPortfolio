@@ -1,11 +1,8 @@
 import { registry, uid } from './registry';
-import { VirtualFS } from '../filesystem/virtualFS';
-import { rootFS } from '../filesystem/content';
+import { fs } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
 import type { CommandDefinition, CommandContext, CommandOutput, OutputLine } from '../types';
-
-const fs = new VirtualFS(rootFS);
 
 function getCwd(): string {
   return useTerminalStore.getState().cwd;
@@ -238,8 +235,6 @@ function linkify(text: string): string {
     '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
   );
 }
-
-export { fs };
 
 registry.register(ls);
 registry.register(cd);

@@ -21,6 +21,11 @@ export class VirtualFS {
     this.root = root;
   }
 
+  /** Replace the root node (used for locale-reactive rebuilds). */
+  setRoot(root: FSDirectory): void {
+    this.root = root;
+  }
+
   /** Resolve a path to a node. Returns null if not found. */
   resolve(path: string, cwd: string): FSNode | null {
     const absolute = this.toAbsolute(path, cwd);

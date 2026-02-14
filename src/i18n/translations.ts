@@ -183,6 +183,41 @@ const translations: Record<string, Record<Locale, string>> = {
   'cmd.finger': { fr: 'Afficher les témoignages', en: 'Display testimonials', de: 'Empfehlungen anzeigen' },
   'cmd.help': { fr: 'Lister les commandes', en: 'List available commands', de: 'Verfügbare Befehle auflisten' },
   'cmd.clear': { fr: 'Effacer l\'écran', en: 'Clear the terminal screen', de: 'Bildschirm leeren' },
+
+  // --- labels (filesystem content & commands) ---
+  'label.name': { fr: 'Nom', en: 'Name', de: 'Name' },
+  'label.role': { fr: 'Rôle', en: 'Role', de: 'Rolle' },
+  'label.location': { fr: 'Lieu', en: 'Location', de: 'Standort' },
+  'label.status': { fr: 'Statut', en: 'Status', de: 'Status' },
+  'label.company': { fr: 'Entreprise', en: 'Company', de: 'Unternehmen' },
+  'label.email': { fr: 'Email', en: 'Email', de: 'E-Mail' },
+  'label.website': { fr: 'Site', en: 'Website', de: 'Webseite' },
+  'label.period': { fr: 'Période', en: 'Period', de: 'Zeitraum' },
+  'label.institution': { fr: 'Établissement', en: 'Institution', de: 'Einrichtung' },
+  'label.context': { fr: 'Contexte', en: 'Context', de: 'Kontext' },
+  'label.launch': { fr: 'Lancer', en: 'Launch', de: 'Starten' },
+
+  // --- man page headers ---
+  'man.header_experience': { fr: 'EXPERIENCE(7) — Expérience professionnelle', en: 'EXPERIENCE(7) — Professional Experience', de: 'EXPERIENCE(7) — Berufserfahrung' },
+  'man.header_education': { fr: 'EDUCATION(7) — Formation', en: 'EDUCATION(7) — Education', de: 'EDUCATION(7) — Ausbildung' },
+  'man.header_projects': { fr: 'PROJECTS(7) — Projets', en: 'PROJECTS(7) — Projects', de: 'PROJECTS(7) — Projekte' },
+
+  // --- command not found ---
+  'cmd.not_found': { fr: 'commande introuvable', en: 'command not found', de: 'Befehl nicht gefunden' },
+
+  // --- README ---
+  'readme.nav_desc': { fr: 'Naviguer dans le filesystem', en: 'Navigate the filesystem', de: 'Im Dateisystem navigieren' },
+  'readme.man_desc': { fr: 'Pages de manuel (experience, education, projects)', en: 'Manual pages (experience, education, projects)', de: 'Handbuchseiten (experience, education, projects)' },
+  'readme.whoami_desc': { fr: 'Informations personnelles', en: 'Personal information', de: 'Persönliche Informationen' },
+  'readme.finger_desc': { fr: 'Témoignages', en: 'Testimonials', de: 'Empfehlungen' },
+  'readme.env_desc': { fr: "Variables d'environnement", en: 'Environment variables', de: 'Umgebungsvariablen' },
+
+  // --- sections ---
+  'section.achievements': { fr: 'Réalisations', en: 'Achievements', de: 'Erfolge' },
+  'section.contact': { fr: 'Contact', en: 'Contact', de: 'Kontakt' },
+
+  // --- project ---
+  'project.executable': { fr: 'Exécutable disponible : ./launch', en: 'Executable available: ./launch', de: 'Ausführbare Datei verfügbar: ./launch' },
 };
 
 export default translations;

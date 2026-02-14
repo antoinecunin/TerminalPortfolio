@@ -1,11 +1,8 @@
 import { registry, uid } from './registry';
-import { VirtualFS } from '../filesystem/virtualFS';
-import { rootFS } from '../filesystem/content';
+import { fs } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
 import type { CommandDefinition } from '../types';
-
-const fs = new VirtualFS(rootFS);
 
 const grep: CommandDefinition = {
   name: 'grep',
