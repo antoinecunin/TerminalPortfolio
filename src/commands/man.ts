@@ -74,10 +74,10 @@ const PAGES: Record<string, () => OutputLine[]> = {
       }
       lines.push({ id: uid(), text: '' });
       lines.push({ id: uid(), text: `  ${t('label.context')} : ${l(proj.context)}` });
-      if (proj.hasLaunch) {
+      if (proj.hasSSH) {
         lines.push({
           id: uid(),
-          text: `  ${t('label.launch')}   : ssh ${proj.id}@antoinecunin.fr`,
+          text: `  ${t('label.ssh')}      : ssh ${proj.id}@antoinecunin.fr`,
           className: 'highlight',
         });
       }

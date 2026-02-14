@@ -7,7 +7,7 @@ export interface Project {
   context: LocalizedString;
   github?: string;
   demo?: string;
-  hasLaunch: boolean;
+  hasSSH: boolean;
 }
 
 export const projects: Project[] = [
@@ -36,7 +36,7 @@ export const projects: Project[] = [
       en: 'Work-study at A2S (January — June 2025)',
       de: 'Duales Studium bei A2S (Januar — Juni 2025)',
     },
-    hasLaunch: true,
+    hasSSH: true,
   },
   {
     id: 'hpc-monitor',
@@ -63,7 +63,7 @@ export const projects: Project[] = [
       en: 'Work-study at A2S (January — June 2025)',
       de: 'Duales Studium bei A2S (Januar — Juni 2025)',
     },
-    hasLaunch: true,
+    hasSSH: true,
   },
   {
     id: 'gyokeres',
@@ -90,7 +90,7 @@ export const projects: Project[] = [
       en: 'BUT Computer Science (2022-2025)',
       de: 'BUT Informatik (2022-2025)',
     },
-    hasLaunch: false,
+    hasSSH: false,
   },
   {
     id: 'territoria',
@@ -117,6 +117,6 @@ export const projects: Project[] = [
       en: 'BUT Computer Science (2022-2025)',
       de: 'BUT Informatik (2022-2025)',
     },
-    hasLaunch: false,
+    hasSSH: false,
   },
 ];

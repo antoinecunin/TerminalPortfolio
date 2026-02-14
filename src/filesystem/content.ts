@@ -6,6 +6,7 @@ import { education } from '../data/education';
 import { projects } from '../data/projects';
 import { contact } from '../data/contact';
 import { achievements } from '../data/achievements';
+import { buildSSHRoot } from './sshContent';
 import { lWith } from '../i18n/l';
 import translations from '../i18n/translations';
 import { useTerminalStore } from '../store/terminalStore';
@@ -76,9 +77,9 @@ function buildRootFS(locale: Locale): FSDirectory {
     ];
     if (proj.github) lines.push(`GitHub   : ${proj.github}`);
     if (proj.demo) lines.push(`Demo     : ${proj.demo}`);
-    if (proj.hasLaunch) {
+    if (proj.hasSSH) {
       lines.push('');
-      lines.push(t('project.executable'));
+      lines.push(t('project.ssh').replace('{id}', proj.id));
     }
     return lines.join('\n');
   }
@@ -134,9 +135,6 @@ function buildRootFS(locale: Locale): FSDirectory {
     const projFiles: Record<string, FSFile> = {
       'README.md': file('README.md', buildProjectReadme(proj)),
     };
-    if (proj.hasLaunch) {
-      projFiles['launch'] = file('launch', `[${proj.name}]`);
-    }
     projectsChildren[proj.id] = dir(proj.id, projFiles);
   }
 
@@ -166,11 +164,37 @@ function buildRootFS(locale: Locale): FSDirectory {
 // Singleton reactive VirtualFS
 export const fs = new VirtualFS(buildRootFS(useTerminalStore.getState().locale));
 
-// Rebuild on locale change
+// Rebuild on locale change (only when not in SSH)
 let currentLocale = useTerminalStore.getState().locale;
 useTerminalStore.subscribe((state) => {
   if (state.locale !== currentLocale) {
     currentLocale = state.locale;
-    fs.setRoot(buildRootFS(currentLocale));
+    if (!mainRoot) {
+      fs.setRoot(buildRootFS(currentLocale));
+    } else {
+      // Update the saved main root so exiting SSH uses the new locale
+      mainRoot = buildRootFS(currentLocale);
+    }
   }
 });
+
+// --- SSH filesystem swap ---
+
+let mainRoot: FSDirectory | null = null;
+
+export function enterSSH(projectId: string): void {
+  mainRoot = fs.getRoot();
+  const sshRoot = buildSSHRoot(projectId);
+  if (sshRoot) fs.setRoot(sshRoot);
+}
+
+export function exitSSH(): void {
+  if (mainRoot) {
+    fs.setRoot(mainRoot);
+    mainRoot = null;
+  }
+}
+
+export function isInSSH(): boolean {
+  return mainRoot !== null;
+}

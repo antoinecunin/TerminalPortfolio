@@ -195,7 +195,7 @@ const translations: Record<string, Record<Locale, string>> = {
   'label.period': { fr: 'Période', en: 'Period', de: 'Zeitraum' },
   'label.institution': { fr: 'Établissement', en: 'Institution', de: 'Einrichtung' },
   'label.context': { fr: 'Contexte', en: 'Context', de: 'Kontext' },
-  'label.launch': { fr: 'Lancer', en: 'Launch', de: 'Starten' },
+  'label.ssh': { fr: 'SSH', en: 'SSH', de: 'SSH' },
 
   // --- man page headers ---
   'man.header_experience': { fr: 'EXPERIENCE(7) — Expérience professionnelle', en: 'EXPERIENCE(7) — Professional Experience', de: 'EXPERIENCE(7) — Berufserfahrung' },
@@ -217,7 +217,69 @@ const translations: Record<string, Record<Locale, string>> = {
   'section.contact': { fr: 'Contact', en: 'Contact', de: 'Kontakt' },
 
   // --- project ---
-  'project.executable': { fr: 'Exécutable disponible : ./launch', en: 'Executable available: ./launch', de: 'Ausführbare Datei verfügbar: ./launch' },
+  'project.ssh': {
+    fr: 'Code source accessible : ssh {id}@antoinecunin.fr',
+    en: 'Source code available: ssh {id}@antoinecunin.fr',
+    de: 'Quellcode verfügbar: ssh {id}@antoinecunin.fr',
+  },
+
+  // --- ssh ---
+  'ssh.usage': {
+    fr: 'Usage: ssh <projet>@antoinecunin.fr',
+    en: 'Usage: ssh <project>@antoinecunin.fr',
+    de: 'Verwendung: ssh <Projekt>@antoinecunin.fr',
+  },
+  'ssh.connecting': {
+    fr: "Connexion à {0}...",
+    en: 'Connecting to {0}...',
+    de: 'Verbindung zu {0}...',
+  },
+  'ssh.connected': {
+    fr: 'Connexion établie.',
+    en: 'Connection established.',
+    de: 'Verbindung hergestellt.',
+  },
+  'ssh.hint': {
+    fr: "Tapez 'ls' pour parcourir, 'cat <fichier>' pour lire, 'exit' pour quitter.",
+    en: "Type 'ls' to browse, 'cat <file>' to read, 'exit' to disconnect.",
+    de: "Geben Sie 'ls' ein zum Durchsuchen, 'cat <Datei>' zum Lesen, 'exit' zum Trennen.",
+  },
+  'ssh.already_connected': {
+    fr: 'Session SSH déjà active. Tapez exit pour quitter.',
+    en: 'SSH session already active. Type exit to disconnect.',
+    de: 'SSH-Sitzung bereits aktiv. Geben Sie exit ein, um die Verbindung zu trennen.',
+  },
+  'ssh.invalid_host': {
+    fr: "Hôte inconnu : {0}",
+    en: 'Unknown host: {0}',
+    de: 'Unbekannter Host: {0}',
+  },
+  'ssh.unknown_project': {
+    fr: "Projet inconnu : {0}",
+    en: 'Unknown project: {0}',
+    de: 'Unbekanntes Projekt: {0}',
+  },
+  'ssh.no_ssh': {
+    fr: "Pas de code source disponible pour {0}.",
+    en: 'No source code available for {0}.',
+    de: 'Kein Quellcode verfügbar für {0}.',
+  },
+
+  // --- exit ---
+  'exit.closed': {
+    fr: 'Connexion à {0} fermée.',
+    en: 'Connection to {0} closed.',
+    de: 'Verbindung zu {0} geschlossen.',
+  },
+  'exit.not_connected': {
+    fr: "Pas de session SSH active.",
+    en: 'No active SSH session.',
+    de: 'Keine aktive SSH-Sitzung.',
+  },
+
+  // --- command descriptions ---
+  'cmd.ssh': { fr: 'Se connecter à un projet via SSH', en: 'Connect to a project via SSH', de: 'Per SSH mit einem Projekt verbinden' },
+  'cmd.exit': { fr: 'Fermer la session SSH', en: 'Close SSH session', de: 'SSH-Sitzung beenden' },
 };
 
 export default translations;

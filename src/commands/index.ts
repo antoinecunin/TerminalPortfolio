@@ -10,5 +10,7 @@ import './env';
 import './grep';
 import './history';
 import './finger';
+import './ssh';
+import './exit';
 
 export { registry } from './registry';

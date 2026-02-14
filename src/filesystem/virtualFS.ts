@@ -21,6 +21,11 @@ export class VirtualFS {
     this.root = root;
   }
 
+  /** Return the current root node. */
+  getRoot(): FSDirectory {
+    return this.root;
+  }
+
   /** Replace the root node (used for locale-reactive rebuilds). */
   setRoot(root: FSDirectory): void {
     this.root = root;
