@@ -3,10 +3,100 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
-    <title>Antoine Cunin — Portfolio</title>
-    <meta name="description" content="Portfolio interactif d'Antoine Cunin, développeur Fullstack & DevOps à Strasbourg." />
+    <title>Antoine Cunin — Portfolio Terminal</title>
+    <meta name="description" content="Portfolio interactif d'Antoine Cunin, développeur Fullstack & DevOps à Strasbourg. Naviguez dans un terminal rétro CRT." />
+    <meta name="author" content="Antoine Cunin" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="canonical" href="https://antoinecunin.fr/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://antoinecunin.fr/" />
+    <meta property="og:title" content="Antoine Cunin — Portfolio Terminal" />
+    <meta property="og:description" content="Portfolio interactif d'Antoine Cunin, développeur Fullstack & DevOps. Naviguez dans un terminal rétro CRT." />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Antoine Cunin" />
+    <meta property="og:image" content="https://antoinecunin.fr/img/og-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Antoine Cunin — Portfolio Terminal avec effet CRT rétro" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Antoine Cunin — Portfolio Terminal" />
+    <meta name="twitter:description" content="Portfolio interactif d'Antoine Cunin, développeur Fullstack & DevOps. Naviguez dans un terminal rétro CRT." />
+    <meta name="twitter:image" content="https://antoinecunin.fr/img/og-preview.png" />
+    <meta name="twitter:image:alt" content="Antoine Cunin — Portfolio Terminal avec effet CRT rétro" />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://antoinecunin.fr/#person",
+      "name": "Antoine Cunin",
+      "url": "https://antoinecunin.fr",
+      "jobTitle": "Développeur Fullstack & DevOps",
+      "description": "Développeur passionné par les interfaces terminal (TUI), l'automatisation et les systèmes distribués.",
+      "email": "antoine.cunin.pro@gmail.com",
+      "knowsAbout": ["Python", "TypeScript", "React", "C#", "Docker", "CI/CD", "Linux"],
+      "sameAs": [
+        "https://www.linkedin.com/in/antoine-cunin-7441742a3/",
+        "https://github.com/antoinecunin"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Gaia Data"
+      },
+      "alumniOf": [
+        { "@type": "EducationalOrganization", "name": "Epitech" },
+        { "@type": "EducationalOrganization", "name": "IUT Robert Schuman" }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Strasbourg",
+        "addressCountry": "FR"
+      }
+    }
+    </script>
   </head>
   <body>
+    <!-- Semantic fallback for crawlers/browsers that don't execute JS -->
+    <noscript>
+      <main>
+        <h1>Antoine Cunin — Développeur Fullstack & DevOps</h1>
+        <p>Développeur passionné par les interfaces terminal (TUI), l'automatisation et les systèmes distribués. Actuellement en alternance chez Gaia Data en tant qu'architecte SI.</p>
+        <h2>Compétences</h2>
+        <p>Python, TypeScript, React, C#, Docker, CI/CD, iRODS, Linux</p>
+        <h2>Expérience</h2>
+        <ul>
+          <li>Architecte SI — Gaia Data (2025-2027)</li>
+          <li>Développeur logiciel — A2S (2025)</li>
+          <li>Développeur Fullstack — Observatoire Astronomique de Strasbourg (2024)</li>
+        </ul>
+        <h2>Formation</h2>
+        <ul>
+          <li>Master of Science Tech — Epitech (2025-2027)</li>
+          <li>BUT Informatique — IUT Robert Schuman (2022-2025)</li>
+        </ul>
+        <h2>Projets</h2>
+        <ul>
+          <li>DAG Visualizer — Visualiseur terminal avec Python et Ncurses</li>
+          <li>HPC Monitor — Moniteur terminal avec Python et Textual</li>
+          <li>Gyokeres — Application web/mobile de quiz multijoueur</li>
+          <li>Territoria — Jeu de gestion sérieux avec Godot</li>
+        </ul>
+        <h2>Contact</h2>
+        <p>Email: antoine.cunin.pro@gmail.com</p>
+        <nav>
+          <a href="https://www.linkedin.com/in/antoine-cunin-7441742a3/">LinkedIn</a>
+          <a href="https://github.com/antoinecunin">GitHub</a>
+          <a href="https://calendly.com/cunin-antoine-pro/30min">Calendly</a>
+        </nav>
+      </main>
+    </noscript>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
