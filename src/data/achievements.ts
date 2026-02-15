@@ -8,14 +8,14 @@ export interface Achievement {
 export const achievements: Achievement[] = [
   {
     title: {
-      fr: 'RegexCrossword — Top 72',
-      en: 'RegexCrossword — Top 72',
-      de: 'RegexCrossword — Top 72',
+      fr: 'RegexCrossword — Top 76',
+      en: 'RegexCrossword — Top 76',
+      de: 'RegexCrossword — Top 76',
     },
     description: {
-      fr: 'Classé dans le top 72 mondial sur RegexCrossword (PCRE2).',
-      en: 'Ranked in the top 72 worldwide on RegexCrossword (PCRE2).',
-      de: 'Platzierung in den Top 72 weltweit bei RegexCrossword (PCRE2).',
+      fr: 'Classé dans le top 76 mondial sur plus de 90 000 joueurs (moteur JavaScript).',
+      en: 'Ranked in the top 76 worldwide out of over 90,000 players (JavaScript engine).',
+      de: 'Platzierung in den Top 76 weltweit unter über 90.000 Spielern (JavaScript-Engine).',
     },
   },
 ];
