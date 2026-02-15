@@ -119,4 +119,31 @@ export const projects: Project[] = [
     },
     hasSSH: false,
   },
+  {
+    id: 'portfolio',
+    name: 'Portfolio Terminal',
+    description: {
+      fr: [
+        'Ce site — un terminal interactif avec effets CRT rétro,',
+        'construit avec React, TypeScript et Vite.',
+        'Navigation par commandes Linux, i18n FR/EN/DE, thèmes.',
+      ],
+      en: [
+        'This website — an interactive terminal with retro CRT effects,',
+        'built with React, TypeScript and Vite.',
+        'Linux command navigation, i18n FR/EN/DE, themes.',
+      ],
+      de: [
+        'Diese Website — ein interaktives Terminal mit Retro-CRT-Effekten,',
+        'erstellt mit React, TypeScript und Vite.',
+        'Linux-Befehlsnavigation, i18n FR/EN/DE, Themes.',
+      ],
+    },
+    context: {
+      fr: 'Projet personnel (2025)',
+      en: 'Personal project (2025)',
+      de: 'Persönliches Projekt (2025)',
+    },
+    hasSSH: true,
+  },
 ];

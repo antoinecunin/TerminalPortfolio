@@ -1,4 +1,5 @@
 import type { FSDirectory, FSFile } from './virtualFS';
+import { buildPortfolioHome } from './sshPortfolioContent';
 
 function file(name: string, content: string): FSFile {
   return { type: 'file', name, content };
@@ -1134,6 +1135,7 @@ test publish`;
 // --- Builder ---
 
 const SSH_FILESYSTEMS: Record<string, () => FSDirectory> = {
+  'portfolio': buildPortfolioHome,
   'dag-visualizer': () =>
     dir('antoine', {
       'README.md': file('README.md', README_MD),
