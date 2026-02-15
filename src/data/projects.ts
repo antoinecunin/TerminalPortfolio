@@ -70,19 +70,19 @@ export const projects: Project[] = [
     name: 'Gyokeres',
     description: {
       fr: [
-        'Application web et mobile permettant la création et la',
-        'participation à des quiz multijoueurs.',
-        'Spécialisé sur le déploiement, CI/CD, backend et documentation.',
+        'Application web et mobile de création et participation',
+        'à des quiz en multijoueur. Personnellement spécialisé sur',
+        'le déploiement, le CI/CD, le backend et la rédaction.',
       ],
       en: [
-        'Web and mobile application for creating and',
-        'participating in multiplayer quizzes.',
-        'Focused on deployment, CI/CD, backend and documentation.',
+        'Web and mobile application for creating and participating',
+        'in multiplayer quizzes. Personally focused on',
+        'deployment, CI/CD, backend and documentation.',
       ],
       de: [
-        'Web- und Mobile-Anwendung zur Erstellung und',
-        'Teilnahme an Multiplayer-Quizzen.',
-        'Schwerpunkt auf Deployment, CI/CD, Backend und Dokumentation.',
+        'Web- und Mobile-Anwendung zur Erstellung und Teilnahme',
+        'an Multiplayer-Quizzen. Persönlich spezialisiert auf',
+        'Deployment, CI/CD, Backend und Dokumentation.',
       ],
     },
     context: {
@@ -97,19 +97,19 @@ export const projects: Project[] = [
     name: 'Territoria',
     description: {
       fr: [
-        'Jeu de gestion sérieux créé avec Godot en C# visant à',
-        "comprendre le principe du métabolisme urbain à travers",
-        'ses différentes phases.',
+        'Jeu de gestion sérieux développé avec Godot en C#, simulant',
+        'le métabolisme urbain à travers la gestion des flux de',
+        'ressources entrants et sortants au fil des phases de territorialisation.',
       ],
       en: [
-        'Serious management game built with Godot in C# aiming to',
-        'understand the concept of urban metabolism through',
-        'its different phases.',
+        'Serious management game developed with Godot in C#, simulating',
+        'urban metabolism through the management of incoming and outgoing',
+        'resource flows across territorialization phases.',
       ],
       de: [
-        'Ernsthaftes Managementspiel mit Godot in C# zur',
-        'Veranschaulichung des Konzepts des urbanen Metabolismus',
-        'in seinen verschiedenen Phasen.',
+        'Ernsthaftes Managementspiel entwickelt mit Godot in C#, das den',
+        'urbanen Metabolismus durch die Verwaltung ein- und ausgehender',
+        'Ressourcenflüsse über die Territorialisierungsphasen simuliert.',
       ],
     },
     context: {
