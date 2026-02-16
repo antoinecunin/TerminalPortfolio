@@ -5,7 +5,6 @@ import type { FSDirectory, FSFile } from './virtualFS';
 const sourceFiles = import.meta.glob(
   [
     '/src/**/*.{ts,tsx,css}',
-    '/public/**/*.{txt,xml,svg}',
     '/index.html',
     '/*.{json,ts,js}',
     '/tsconfig.*.json',
