@@ -3,9 +3,9 @@ import type { LocalizedString, LocalizedArray } from '../types';
 export const about = {
   name: 'Antoine Cunin',
   role: {
-    fr: 'Développeur Fullstack, Logiciel & DevOps',
-    en: 'Fullstack, Software & DevOps Developer',
-    de: 'Fullstack-, Software- & DevOps-Entwickler',
+    fr: 'Développeur',
+    en: 'Developer',
+    de: 'Entwickler',
   } satisfies LocalizedString,
   location: {
     fr: 'Strasbourg, France',
