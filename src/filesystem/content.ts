@@ -96,10 +96,17 @@ function buildRootFS(locale: Locale): FSDirectory {
   ].join('\n');
 
   // --- Achievements ---
+  const codingAchievements = achievements.filter((a) => a.category === 'coding');
+  const creativeAchievements = achievements.filter((a) => a.category === 'creative');
+
   const achievementsContent = [
     `=== ${t('section.achievements')} ===`,
     '',
-    ...achievements.map((a) => `${ls(a.title)}\n  ${ls(a.description)}`),
+    `-- ${t('category.coding')} --`,
+    ...codingAchievements.map((a) => `${ls(a.title)}\n  ${ls(a.description)}`),
+    '',
+    `-- ${t('category.creative')} --`,
+    ...creativeAchievements.map((a) => `${ls(a.title)}\n  ${ls(a.description)}`),
   ].join('\n');
 
   // --- README ---

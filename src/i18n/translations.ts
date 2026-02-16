@@ -215,6 +215,8 @@ const translations: Record<string, Record<Locale, string>> = {
   // --- sections ---
   'section.achievements': { fr: 'Réalisations', en: 'Achievements', de: 'Erfolge' },
   'section.contact': { fr: 'Contact', en: 'Contact', de: 'Kontakt' },
+  'category.coding': { fr: 'Programmation', en: 'Coding', de: 'Programmierung' },
+  'category.creative': { fr: 'Créatif', en: 'Creative', de: 'Kreativ' },
 
   // --- project ---
   'project.ssh': {
