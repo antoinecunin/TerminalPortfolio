@@ -1,5 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import styles from './BootSequence.module.css';
+import { registry } from '../commands/registry';
+import { useTerminalStore } from '../store/terminalStore';
 
 interface BootLine {
   text: string;
@@ -7,18 +9,27 @@ interface BootLine {
   delay?: number;
 }
 
-const BOOT_LINES: BootLine[] = [
-  { text: 'BIOS v1.0 — Portfolio System' },
-  { text: 'Memory check... 640K OK', delay: 300 },
-  { text: '' },
-  { text: '[    0.001] Initializing terminal subsystem', delay: 200 },
-  { text: '[    0.042] Mounting virtual filesystem... OK' },
-  { text: '[    0.089] Loading command registry... 14 commands registered' },
-  { text: '[    0.127] Setting locale: fr_FR.UTF-8' },
-  { text: '[    0.156] Starting shell session' },
-  { text: '' },
-  { text: 'Ready.', delay: 300 },
-];
+const LOCALE_MAP: Record<string, string> = {
+  fr: 'fr_FR.UTF-8',
+  en: 'en_US.UTF-8',
+  de: 'de_DE.UTF-8',
+};
+
+function buildBootLines(commandCount: number, locale: string): BootLine[] {
+  const localeCode = LOCALE_MAP[locale] ?? `${locale}.UTF-8`;
+  return [
+    { text: 'BIOS v1.0 — Portfolio System' },
+    { text: 'Memory check... 640K OK', delay: 300 },
+    { text: '' },
+    { text: '[    0.001] Initializing terminal subsystem', delay: 200 },
+    { text: '[    0.042] Mounting virtual filesystem... OK' },
+    { text: `[    0.089] Loading command registry... ${commandCount} commands registered` },
+    { text: `[    0.127] Setting locale: ${localeCode}` },
+    { text: '[    0.156] Starting shell session' },
+    { text: '' },
+    { text: 'Ready.', delay: 300 },
+  ];
+}
 
 const CHAR_DELAY = 8; // ms per character
 const LINE_DELAY = 80; // ms between lines (default)
@@ -29,6 +40,12 @@ interface BootSequenceProps {
 }
 
 export function BootSequence({ onComplete }: BootSequenceProps) {
+  const locale = useTerminalStore((s) => s.locale);
+  const bootLines = useMemo(
+    () => buildBootLines(registry.getAll().length, locale),
+    [locale]
+  );
+
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
   const [currentChar, setCurrentChar] = useState(0);
   const [currentLine, setCurrentLine] = useState(0);
@@ -47,7 +64,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
     const skip = () => {
       if (skipRef.current) return;
       skipRef.current = true;
-      setDisplayedLines(BOOT_LINES.map((l) => l.text));
+      setDisplayedLines(bootLines.map((l) => l.text));
       setIsDone(true);
     };
     document.addEventListener('click', skip);
@@ -56,7 +73,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
       document.removeEventListener('click', skip);
       document.removeEventListener('keydown', skip);
     };
-  }, []);
+  }, [bootLines]);
 
   // After done, wait then complete
   useEffect(() => {
@@ -68,12 +85,12 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
   // TypeWriter engine — all setState calls inside setTimeout callbacks
   useEffect(() => {
     if (skipRef.current || isDone) return;
-    if (currentLine >= BOOT_LINES.length) {
+    if (currentLine >= bootLines.length) {
       const timer = setTimeout(() => setIsDone(true), 0);
       return () => clearTimeout(timer);
     }
 
-    const line = BOOT_LINES[currentLine];
+    const line = bootLines[currentLine];
 
     // Empty line — add and move to next
     if (line.text === '') {
@@ -109,7 +126,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
       }
     }, CHAR_DELAY);
     return () => clearTimeout(timer);
-  }, [currentLine, currentChar, isDone]);
+  }, [currentLine, currentChar, isDone, bootLines]);
 
   return (
     <div className={styles.boot}>
