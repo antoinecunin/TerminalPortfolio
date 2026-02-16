@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { OutputBlock, Theme, Locale } from '../types';
 
 const LOCALE_KEY = 'terminal-locale';
+const MAX_OUTPUT_BLOCKS = 100;
 
 function detectLocale(): Locale {
   const stored = localStorage.getItem(LOCALE_KEY);
@@ -48,7 +49,14 @@ export const useTerminalStore = create<TerminalState>((set) => ({
   // Output
   outputBlocks: [],
   addOutputBlock: (block) =>
-    set((state) => ({ outputBlocks: [...state.outputBlocks, block] })),
+    set((state) => {
+      const blocks = [...state.outputBlocks, block];
+      return {
+        outputBlocks: blocks.length > MAX_OUTPUT_BLOCKS
+          ? blocks.slice(-MAX_OUTPUT_BLOCKS)
+          : blocks,
+      };
+    }),
   clearOutput: () => set({ outputBlocks: [] }),
 
   // Command history
