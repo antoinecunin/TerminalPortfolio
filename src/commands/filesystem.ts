@@ -220,7 +220,7 @@ const tree: CommandDefinition = {
     lines.push({ id: uid(), text: '' });
     lines.push({
       id: uid(),
-      text: `${dirs} ${t('fs.dirs_count')}, ${files} ${t('fs.files_count')}`,
+      text: `${dirs} ${t(dirs === 1 ? 'fs.dir' : 'fs.dirs')}, ${files} ${t(files === 1 ? 'fs.file' : 'fs.files')}`,
       className: 'dim',
     });
 

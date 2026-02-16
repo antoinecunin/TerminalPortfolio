@@ -54,16 +54,10 @@ const translations: Record<string, Record<Locale, string>> = {
     en: 'Usage: cat <file>',
     de: 'Verwendung: cat <Datei>',
   },
-  'fs.dirs_count': {
-    fr: 'dossier(s)',
-    en: 'directory(ies)',
-    de: 'Verzeichnis(se)',
-  },
-  'fs.files_count': {
-    fr: 'fichier(s)',
-    en: 'file(s)',
-    de: 'Datei(en)',
-  },
+  'fs.dir': { fr: 'dossier', en: 'directory', de: 'Verzeichnis' },
+  'fs.dirs': { fr: 'dossiers', en: 'directories', de: 'Verzeichnisse' },
+  'fs.file': { fr: 'fichier', en: 'file', de: 'Datei' },
+  'fs.files': { fr: 'fichiers', en: 'files', de: 'Dateien' },
 
   // --- grep ---
   'grep.usage': {
