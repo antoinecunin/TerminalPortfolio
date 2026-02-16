@@ -14,7 +14,7 @@ const ls: CommandDefinition = {
   name: 'ls',
   aliases: [],
   description: 'List directory contents',
-  usage: 'ls [path]',
+  usage: 'ls [-a] [-l] [path]',
   category: 'navigation',
   execute: (ctx: CommandContext): CommandOutput => {
     const target = ctx.args[0] || '.';

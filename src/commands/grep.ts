@@ -24,11 +24,10 @@ const grep: CommandDefinition = {
 
     const cwd = useTerminalStore.getState().cwd;
     const searchPath = ctx.args[1] || '.';
-    const caseInsensitive = !!ctx.flags['i'];
 
     let regex: RegExp;
     try {
-      regex = new RegExp(pattern, caseInsensitive ? 'gi' : 'g');
+      regex = new RegExp(pattern, 'gi');
     } catch {
       return {
         lines: [
