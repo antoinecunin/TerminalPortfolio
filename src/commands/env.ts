@@ -4,7 +4,7 @@ import { contact } from '../data/contact';
 import { t } from '../i18n/t';
 import type { CommandDefinition, CommandOutput, Theme, Locale } from '../types';
 
-const VALID_THEMES: Theme[] = ['green', 'amber', 'blue'];
+const VALID_THEMES: Theme[] = ['classic', 'rich', 'neon', 'ocean', 'amber'];
 const VALID_LOCALES: Locale[] = ['fr', 'en', 'de'];
 
 // --- env / printenv ---
@@ -52,7 +52,7 @@ const exportCmd: CommandDefinition = {
   name: 'export',
   aliases: [],
   description: 'Set environment variable',
-  usage: 'export THEME=green\nexport LANG=fr',
+  usage: 'export THEME=classic\nexport LANG=fr',
   category: 'system',
   execute: (ctx): CommandOutput => {
     const assignment = ctx.args[0];
@@ -62,7 +62,7 @@ const exportCmd: CommandDefinition = {
         lines: [
           { id: uid(), text: '' },
           { id: uid(), text: '  Usage:', className: 'dim' },
-          { id: uid(), text: '    export THEME=green|amber|blue' },
+          { id: uid(), text: '    export THEME=classic|rich|neon|ocean|amber' },
           { id: uid(), text: '    export LANG=fr|en|de' },
           { id: uid(), text: '' },
         ],

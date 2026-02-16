@@ -4,7 +4,7 @@
   font-family: var(--term-font);
   font-size: var(--term-font-size);
   line-height: var(--term-line-height);
-  color: var(--term-fg);
+  color: var(--term-accent);
   background: var(--term-bg);
   white-space: pre-wrap;
 }
@@ -13,7 +13,7 @@
   display: inline-block;
   width: 0.6em;
   height: 1.1em;
-  background: var(--term-fg);
+  background: var(--term-accent);
   box-shadow: 0 0 6px rgba(var(--term-glow-rgb), var(--crt-glow-intensity));
   animation: blink 1s step-end infinite;
   vertical-align: text-bottom;

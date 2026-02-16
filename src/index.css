@@ -25,10 +25,12 @@
 :root {
   /* Green theme (default) */
   --term-bg: #0a0a0a;
-  --term-fg: #33ff33;
-  --term-fg-dim: #1a8c1a;
-  --term-fg-bright: #66ff66;
-  --term-prompt: #33ff33;
+  --term-fg: #d4d4d4;
+  --term-fg-dim: #808080;
+  --term-fg-bright: #ffffff;
+  --term-accent: #33ff33;
+  --term-accent-bright: #66ff66;
+  --term-accent-dim: #1a8c1a;
   --term-error: #ff3333;
   --term-warning: #ffaa33;
   --term-highlight: #33ffff;
@@ -47,28 +49,60 @@
   --crt-flicker-intensity: 0.02;
 }
 
-/* Amber theme */
+/* Rich theme — gold + silver */
+[data-theme="rich"] {
+  --term-fg: #c0c0c0;
+  --term-fg-dim: #707070;
+  --term-fg-bright: #e8e8e8;
+  --term-accent: #d4af37;
+  --term-accent-bright: #f0d060;
+  --term-accent-dim: #8b7320;
+  --term-highlight: #d4af37;
+  --term-link: #d4af37;
+  --term-selection: rgba(212, 175, 55, 0.2);
+  --term-glow-rgb: 212, 175, 55;
+}
+
+/* Neon theme — cyberpunk magenta */
+[data-theme="neon"] {
+  --term-fg: #e0e0e0;
+  --term-fg-dim: #808080;
+  --term-fg-bright: #ffffff;
+  --term-accent: #ff3399;
+  --term-accent-bright: #ff66b2;
+  --term-accent-dim: #99205c;
+  --term-highlight: #00ffff;
+  --term-link: #00ffff;
+  --term-selection: rgba(255, 51, 153, 0.2);
+  --term-glow-rgb: 255, 51, 153;
+}
+
+/* Ocean theme — teal + steel */
+[data-theme="ocean"] {
+  --term-fg: #b0c4de;
+  --term-fg-dim: #6080a0;
+  --term-fg-bright: #dce8f0;
+  --term-accent: #00cec9;
+  --term-accent-bright: #55efc4;
+  --term-accent-dim: #007a75;
+  --term-highlight: #74b9ff;
+  --term-link: #74b9ff;
+  --term-selection: rgba(0, 206, 201, 0.2);
+  --term-glow-rgb: 0, 206, 201;
+}
+
+/* Amber theme — warm CRT */
 [data-theme="amber"] {
-  --term-fg: #ffb000;
-  --term-fg-dim: #8c6000;
-  --term-fg-bright: #ffd966;
-  --term-prompt: #ffb000;
+  --term-fg: #f5e6c8;
+  --term-fg-dim: #a08050;
+  --term-fg-bright: #fff5e0;
+  --term-accent: #ffb000;
+  --term-accent-bright: #ffd966;
+  --term-accent-dim: #8c6000;
   --term-highlight: #ffe066;
   --term-link: #ffe066;
   --term-selection: rgba(255, 176, 0, 0.2);
   --term-glow-rgb: 255, 176, 0;
-}
-
-/* Blue theme */
-[data-theme="blue"] {
-  --term-fg: #00bfff;
-  --term-fg-dim: #006080;
-  --term-fg-bright: #66d9ff;
-  --term-prompt: #00bfff;
-  --term-highlight: #66d9ff;
-  --term-link: #66d9ff;
-  --term-selection: rgba(0, 191, 255, 0.2);
-  --term-glow-rgb: 0, 191, 255;
 }
 
 *,

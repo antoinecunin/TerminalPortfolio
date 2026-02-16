@@ -17,7 +17,7 @@ export interface OutputBlock {
   sshSession?: string | null;
 }
 
-export type Theme = 'green' | 'amber' | 'blue';
+export type Theme = 'classic' | 'rich' | 'neon' | 'ocean' | 'amber';
 export type Locale = 'fr' | 'en' | 'de';
 
 export type LocalizedString = Record<Locale, string>;

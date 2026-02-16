@@ -70,7 +70,7 @@ export const useTerminalStore = create<TerminalState>((set) => ({
   setSshSession: (session) => set({ sshSession: session }),
 
   // Settings
-  theme: 'green',
+  theme: 'classic',
   setTheme: (theme) => set({ theme }),
   locale: detectLocale(),
   setLocale: (locale) => {
