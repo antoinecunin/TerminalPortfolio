@@ -45,12 +45,21 @@ const ls: CommandDefinition = {
       ? nodes
       : nodes.filter((n) => !n.name.startsWith('.'));
 
-    if (filtered.length === 0) {
+    // Add . and .. when -a is used
+    const entries = showHidden
+      ? [
+          { name: '.', type: 'directory' as const },
+          { name: '..', type: 'directory' as const },
+          ...filtered,
+        ]
+      : filtered;
+
+    if (entries.length === 0) {
       return { lines: [] };
     }
 
     if (longFormat) {
-      const lines = filtered.map((node) => ({
+      const lines = entries.map((node) => ({
         id: uid(),
         text: `  ${node.type === 'directory' ? 'd' : '-'}  ${node.name}${node.type === 'directory' ? '/' : ''}`,
         className: node.type === 'directory' ? 'highlight' : undefined,
@@ -60,7 +69,7 @@ const ls: CommandDefinition = {
 
     // Default: compact listing
     // Color directories differently
-    const lines = filtered.map((n) => ({
+    const lines = entries.map((n) => ({
       id: uid(),
       text: `  ${n.type === 'directory' ? n.name + '/' : n.name}`,
       className: n.type === 'directory' ? 'highlight' : undefined,
