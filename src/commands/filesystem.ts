@@ -2,6 +2,7 @@ import { registry, uid } from './registry';
 import { fs } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
+import { escapeHtml } from '../utils/escapeHtml';
 import type { CommandDefinition, CommandContext, CommandOutput, OutputLine } from '../types';
 
 function getCwd(): string {
@@ -228,12 +229,24 @@ const tree: CommandDefinition = {
   },
 };
 
-/** Turn URLs in text into clickable <a> tags */
+/** Turn URLs in text into clickable <a> tags (escapes non-URL parts to prevent XSS) */
 function linkify(text: string): string {
-  return text.replace(
-    /(https?:\/\/[^\s]+)/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
-  );
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const parts: string[] = [];
+  let lastIdx = 0;
+  let m: RegExpExecArray | null;
+  while ((m = urlRegex.exec(text)) !== null) {
+    if (m.index > lastIdx) {
+      parts.push(escapeHtml(text.slice(lastIdx, m.index)));
+    }
+    const url = m[0];
+    parts.push(`<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`);
+    lastIdx = urlRegex.lastIndex;
+  }
+  if (lastIdx < text.length) {
+    parts.push(escapeHtml(text.slice(lastIdx)));
+  }
+  return parts.join('');
 }
 
 registry.register(ls);

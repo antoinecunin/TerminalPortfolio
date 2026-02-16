@@ -2,6 +2,7 @@ import { registry, uid } from './registry';
 import { fs } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
+import { escapeHtml } from '../utils/escapeHtml';
 import type { CommandDefinition } from '../types';
 
 const grep: CommandDefinition = {
@@ -48,18 +49,28 @@ const grep: CommandDefinition = {
       const lines = file.content.split('\n');
       for (const line of lines) {
         if (regex.test(line)) {
-          // Reset lastIndex for global regex
           regex.lastIndex = 0;
 
           const displayPath = file.path.startsWith(home)
             ? '~' + file.path.slice(home.length)
             : file.path;
 
-          // Highlight match
-          const highlighted = line.replace(
-            regex,
-            (match) => `<span style="color:var(--term-fg-bright);font-weight:700">${escapeHtml(match)}</span>`
-          );
+          // Highlight match (escape all parts to prevent XSS)
+          const parts: string[] = [];
+          let lastIdx = 0;
+          let m: RegExpExecArray | null;
+          regex.lastIndex = 0;
+          while ((m = regex.exec(line)) !== null) {
+            if (m.index > lastIdx) {
+              parts.push(escapeHtml(line.slice(lastIdx, m.index)));
+            }
+            parts.push(`<span style="color:var(--term-fg-bright);font-weight:700">${escapeHtml(m[0])}</span>`);
+            lastIdx = regex.lastIndex;
+          }
+          if (lastIdx < line.length) {
+            parts.push(escapeHtml(line.slice(lastIdx)));
+          }
+          const highlighted = parts.join('');
 
           results.push({
             id: uid(),
@@ -85,13 +96,5 @@ const grep: CommandDefinition = {
     return { lines: results };
   },
 };
-
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
 
 registry.register(grep);
