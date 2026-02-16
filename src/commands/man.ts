@@ -4,6 +4,7 @@ import { education } from '../data/education';
 import { projects } from '../data/projects';
 import { l } from '../i18n/l';
 import { t } from '../i18n/t';
+import { SITE_DOMAIN } from '../constants';
 import type { CommandDefinition, OutputLine } from '../types';
 
 const PAGES: Record<string, () => OutputLine[]> = {
@@ -77,7 +78,7 @@ const PAGES: Record<string, () => OutputLine[]> = {
       if (proj.hasSSH) {
         lines.push({
           id: uid(),
-          text: `  ${t('label.ssh')}      : ssh ${proj.id}@antoinecunin.fr`,
+          text: `  ${t('label.ssh')}      : ssh ${proj.id}@${SITE_DOMAIN}`,
           className: 'highlight',
         });
       }

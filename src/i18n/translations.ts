@@ -249,9 +249,9 @@ const translations: Record<string, Record<Locale, string>> = {
     de: 'Verbindung hergestellt.',
   },
   'ssh.hint': {
-    fr: "Tapez 'ls' pour parcourir, 'cat <fichier>' pour lire, 'exit' pour quitter.",
-    en: "Type 'ls' to browse, 'cat <file>' to read, 'exit' to disconnect.",
-    de: "Geben Sie 'ls' ein zum Durchsuchen, 'cat <Datei>' zum Lesen, 'exit' zum Trennen.",
+    fr: "Tapez 'exit' pour quitter.",
+    en: "Type 'exit' to disconnect.",
+    de: "Geben Sie 'exit' ein, um die Verbindung zu trennen.",
   },
   'ssh.already_connected': {
     fr: 'Session SSH déjà active. Tapez exit pour quitter.',

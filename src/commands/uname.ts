@@ -1,4 +1,5 @@
 import { registry, uid } from './registry';
+import { SITE_DOMAIN } from '../constants';
 import type { CommandDefinition } from '../types';
 
 const uname: CommandDefinition = {
@@ -14,7 +15,7 @@ const uname: CommandDefinition = {
           { id: uid(), text: '' },
           {
             id: uid(),
-            text: '  PortfolioOS 2.0.0 antoinecunin.fr x86_64 React/19 TypeScript/5 Vite/6',
+            text: `  PortfolioOS 2.0.0 ${SITE_DOMAIN} x86_64 React/19 TypeScript/5 Vite/6`,
           },
           { id: uid(), text: '' },
           { id: uid(), text: '  Kernel     : React 19 + TypeScript', className: 'dim' },

@@ -1,3 +1,5 @@
+import { HOME_PATH } from '../constants';
+
 export type FSNodeType = 'file' | 'directory';
 
 export interface FSFile {
@@ -76,7 +78,7 @@ export class VirtualFS {
   /** Normalize and resolve a path to absolute. */
   toAbsolute(path: string, cwd: string): string {
     // Replace ~ with home
-    let resolved = path.replace(/^~/, '/home/antoine');
+    let resolved = path.replace(/^~/, HOME_PATH);
 
     // Make relative paths absolute
     if (!resolved.startsWith('/')) {

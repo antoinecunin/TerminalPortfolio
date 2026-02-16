@@ -1,13 +1,6 @@
-import type { FSDirectory, FSFile } from './virtualFS';
+import type { FSDirectory } from './virtualFS';
+import { file, dir } from './fsHelpers';
 import { buildPortfolioHome } from './sshPortfolioContent';
-
-function file(name: string, content: string): FSFile {
-  return { type: 'file', name, content };
-}
-
-function dir(name: string, children: Record<string, FSFile | FSDirectory>): FSDirectory {
-  return { type: 'directory', name, children };
-}
 
 // --- DAG Visualizer source code (embedded from ~/Fun/terminalDAG/) ---
 

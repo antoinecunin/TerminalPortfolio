@@ -1,5 +1,6 @@
 import type { FSDirectory, FSFile } from './virtualFS';
 import { VirtualFS } from './virtualFS';
+import { file, dir } from './fsHelpers';
 import { about } from '../data/about';
 import { experiences } from '../data/experience';
 import { education } from '../data/education';
@@ -10,16 +11,8 @@ import { buildSSHRoot } from './sshContent';
 import { lWith } from '../i18n/l';
 import translations from '../i18n/translations';
 import { useTerminalStore } from '../store/terminalStore';
+import { SITE_DOMAIN } from '../constants';
 import type { Locale } from '../types';
-
-// Helper to create file nodes
-function file(name: string, content: string): FSFile {
-  return { type: 'file', name, content };
-}
-
-function dir(name: string, children: Record<string, FSFile | FSDirectory>): FSDirectory {
-  return { type: 'directory', name, children };
-}
 
 function buildRootFS(locale: Locale): FSDirectory {
   const ls = (field: Record<Locale, string>): string => lWith(field, locale);
@@ -111,7 +104,7 @@ function buildRootFS(locale: Locale): FSDirectory {
 
   // --- README ---
   const readmeContent = [
-    '# antoinecunin.fr',
+    `# ${SITE_DOMAIN}`,
     '',
     `${about.name} — ${ls(about.role)}`,
     '',

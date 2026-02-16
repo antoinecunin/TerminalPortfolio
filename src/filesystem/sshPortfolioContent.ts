@@ -1,4 +1,5 @@
 import type { FSDirectory, FSFile } from './virtualFS';
+import { file, dir } from './fsHelpers';
 
 // Vite reads all git-tracked text files at build time.
 // Excludes: binaries (woff2, png), package-lock.json, .gitignore
@@ -19,14 +20,6 @@ const sourceFiles = import.meta.glob(
 
 // package-lock.json is matched by /*.json but is too large to show
 const EXCLUDED = ['/package-lock.json'];
-
-function file(name: string, content: string): FSFile {
-  return { type: 'file', name, content };
-}
-
-function dir(name: string, children: Record<string, FSFile | FSDirectory>): FSDirectory {
-  return { type: 'directory', name, children };
-}
 
 function ensureDir(root: Record<string, FSFile | FSDirectory>, parts: string[]): Record<string, FSFile | FSDirectory> {
   let current = root;

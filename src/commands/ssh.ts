@@ -3,9 +3,8 @@ import { projects } from '../data/projects';
 import { enterSSH, isInSSH } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
+import { HOME_PATH, SITE_DOMAIN } from '../constants';
 import type { CommandDefinition } from '../types';
-
-const HOST = 'antoinecunin.fr';
 
 function getSSHableProjects() {
   return projects.filter((p) => p.hasSSH);
@@ -15,11 +14,11 @@ const ssh: CommandDefinition = {
   name: 'ssh',
   aliases: [],
   description: 'Connect to a project via SSH',
-  usage: 'ssh <project>@antoinecunin.fr',
+  usage: `ssh <project>@${SITE_DOMAIN}`,
   category: 'action',
   completeArgs: (partial) => {
     const available = getSSHableProjects();
-    const candidates = available.map((p) => `${p.id}@${HOST}`);
+    const candidates = available.map((p) => `${p.id}@${SITE_DOMAIN}`);
     return candidates.filter((c) => c.startsWith(partial));
   },
   execute: (ctx) => {
@@ -31,7 +30,7 @@ const ssh: CommandDefinition = {
           { id: uid(), text: '' },
           ...available.map((p) => ({
             id: uid(),
-            text: `  ssh ${p.id}@${HOST}`,
+            text: `  ssh ${p.id}@${SITE_DOMAIN}`,
             className: 'highlight',
           })),
         ],
@@ -48,7 +47,7 @@ const ssh: CommandDefinition = {
     let projectId = ctx.args[0];
     if (projectId.includes('@')) {
       const [id, host] = projectId.split('@');
-      if (host !== HOST) {
+      if (host !== SITE_DOMAIN) {
         return {
           lines: [{ id: uid(), text: `  ssh: ${t('ssh.invalid_host', host)}`, className: 'error' }],
         };
@@ -72,12 +71,12 @@ const ssh: CommandDefinition = {
     // Connect
     enterSSH(projectId);
     useTerminalStore.getState().setSshSession(projectId);
-    useTerminalStore.getState().setCwd('/home/antoine');
+    useTerminalStore.getState().setCwd(HOME_PATH);
 
     return {
       lines: [
         { id: uid(), text: '' },
-        { id: uid(), text: `  ${t('ssh.connecting', `${projectId}@${HOST}`)}`, className: 'dim' },
+        { id: uid(), text: `  ${t('ssh.connecting', `${projectId}@${SITE_DOMAIN}`)}`, className: 'dim' },
         { id: uid(), text: `  ${t('ssh.connected')}`, className: 'highlight' },
         { id: uid(), text: '' },
         { id: uid(), text: `  ${proj.name}`, className: 'bright' },

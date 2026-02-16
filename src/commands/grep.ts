@@ -3,6 +3,7 @@ import { fs } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
 import { escapeHtml } from '../utils/escapeHtml';
+import { HOME_PATH } from '../constants';
 import type { CommandDefinition } from '../types';
 
 const grep: CommandDefinition = {
@@ -41,7 +42,6 @@ const grep: CommandDefinition = {
     }
 
     const files = fs.getAllFiles(searchPath, cwd);
-    const home = '/home/antoine';
     const results: { id: string; text: string; isHtml: boolean }[] = [];
 
     for (const file of files) {
@@ -50,8 +50,8 @@ const grep: CommandDefinition = {
         if (regex.test(line)) {
           regex.lastIndex = 0;
 
-          const displayPath = file.path.startsWith(home)
-            ? '~' + file.path.slice(home.length)
+          const displayPath = file.path.startsWith(HOME_PATH)
+            ? '~' + file.path.slice(HOME_PATH.length)
             : file.path;
 
           // Highlight match (escape all parts to prevent XSS)

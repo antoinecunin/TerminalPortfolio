@@ -2,6 +2,7 @@ import { registry, uid } from './registry';
 import { fs } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
+import { HOME_PATH } from '../constants';
 import type { CommandDefinition, OutputLine } from '../types';
 
 const find: CommandDefinition = {
@@ -24,7 +25,6 @@ const find: CommandDefinition = {
     const cwd = useTerminalStore.getState().cwd;
     const searchPath = ctx.args[0] || '.';
     const pattern = nameFlag;
-    const home = '/home/antoine';
 
     // Convert glob pattern to regex (* -> .*)
     const regexPattern = pattern
@@ -40,8 +40,8 @@ const find: CommandDefinition = {
     for (const { path, isDirectory } of allPaths) {
       const name = path.split('/').pop() || '';
       if (regex.test(name)) {
-        const displayPath = path.startsWith(home)
-          ? '~' + path.slice(home.length)
+        const displayPath = path.startsWith(HOME_PATH)
+          ? '~' + path.slice(HOME_PATH.length)
           : path;
         results.push({
           id: uid(),

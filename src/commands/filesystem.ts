@@ -2,7 +2,7 @@ import { registry, uid } from './registry';
 import { fs } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
-import { escapeHtml } from '../utils/escapeHtml';
+import { linkify, hasUrls } from '../utils/linkify';
 import type { CommandDefinition, CommandContext, CommandOutput, OutputLine } from '../types';
 
 function getCwd(): string {
@@ -160,9 +160,8 @@ const cat: CommandDefinition = {
       // Split content into lines and make URLs clickable
       const contentLines = content.split('\n');
       for (const line of contentLines) {
-        const htmlLine = linkify(line);
-        if (htmlLine !== line) {
-          results.push({ id: uid(), text: htmlLine, isHtml: true } as OutputLine);
+        if (hasUrls(line)) {
+          results.push({ id: uid(), text: linkify(line), isHtml: true } as OutputLine);
         } else {
           results.push({ id: uid(), text: line });
         }
@@ -237,26 +236,6 @@ const tree: CommandDefinition = {
     return { lines };
   },
 };
-
-/** Turn URLs in text into clickable <a> tags (escapes non-URL parts to prevent XSS) */
-function linkify(text: string): string {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  const parts: string[] = [];
-  let lastIdx = 0;
-  let m: RegExpExecArray | null;
-  while ((m = urlRegex.exec(text)) !== null) {
-    if (m.index > lastIdx) {
-      parts.push(escapeHtml(text.slice(lastIdx, m.index)));
-    }
-    const url = m[0];
-    parts.push(`<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`);
-    lastIdx = urlRegex.lastIndex;
-  }
-  if (lastIdx < text.length) {
-    parts.push(escapeHtml(text.slice(lastIdx)));
-  }
-  return parts.join('');
-}
 
 registry.register(ls);
 registry.register(cd);

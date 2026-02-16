@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { HOME_PATH } from '../constants';
 import type { OutputBlock, Theme, Locale } from '../types';
 
 const LOCALE_KEY = 'terminal-locale';
@@ -70,7 +71,7 @@ export const useTerminalStore = create<TerminalState>((set) => ({
   setHistoryIndex: (index) => set({ historyIndex: index }),
 
   // Filesystem
-  cwd: '/home/antoine',
+  cwd: HOME_PATH,
   setCwd: (cwd) => set({ cwd }),
 
   // SSH session

@@ -1,4 +1,5 @@
 import { useTerminalStore } from '../../store/terminalStore';
+import { HOME_PATH, SITE_DOMAIN } from '../../constants';
 import styles from './Prompt.module.css';
 
 interface PromptProps {
@@ -14,15 +15,12 @@ export function Prompt({ cwd: cwdProp, sshSession: sshProp }: PromptProps = {}) 
   const cwd = cwdProp ?? liveCwd;
   const sshSession = sshProp !== undefined ? sshProp : liveSsh;
 
-  const home = '/home/antoine';
-  const displayPath = cwd.startsWith(home)
-    ? '~' + cwd.slice(home.length)
+  const displayPath = cwd.startsWith(HOME_PATH)
+    ? '~' + cwd.slice(HOME_PATH.length)
     : cwd;
 
   const user = 'visitor';
-  const host = sshSession
-    ? `${sshSession}`
-    : 'antoinecunin.fr';
+  const host = sshSession ?? SITE_DOMAIN;
 
   return (
     <span className={styles.prompt}>
