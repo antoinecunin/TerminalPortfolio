@@ -1,7 +1,13 @@
 {
-  "name": "portfolio-temp",
-  "private": true,
-  "version": "0.0.0",
+  "name": "terminal-portfolio",
+  "version": "1.0.0",
+  "description": "Terminal-style portfolio website",
+  "author": "Antoine Cunin",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antoinecunin/TerminalPortfolio"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
