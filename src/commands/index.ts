@@ -8,6 +8,7 @@ import './man';
 import './uname';
 import './env';
 import './grep';
+import './find';
 import './history';
 import './finger';
 import './ssh';

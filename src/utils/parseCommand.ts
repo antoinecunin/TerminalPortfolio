@@ -43,9 +43,16 @@ export function parseCommand(input: string): ParsedCommand {
         flags[token.slice(2)] = true;
       }
     } else if (token.startsWith('-') && token.length > 1 && !token.startsWith('-', 1)) {
-      // Short flags: -a, -la, -a value
-      for (const char of token.slice(1)) {
-        flags[char] = true;
+      const flagContent = token.slice(1);
+      // Multi-char flag with value: -name pattern
+      if (flagContent.length > 1 && i + 1 < tokens.length && !tokens[i + 1].startsWith('-')) {
+        flags[flagContent] = tokens[i + 1];
+        i++; // Skip next token (consumed as value)
+      } else {
+        // Short flags: -a, -la
+        for (const char of flagContent) {
+          flags[char] = true;
+        }
       }
     } else {
       args.push(token);

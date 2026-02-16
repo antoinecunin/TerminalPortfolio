@@ -59,6 +59,18 @@ const translations: Record<string, Record<Locale, string>> = {
   'fs.file': { fr: 'fichier', en: 'file', de: 'Datei' },
   'fs.files': { fr: 'fichiers', en: 'files', de: 'Dateien' },
 
+  // --- find ---
+  'find.usage': {
+    fr: 'Usage: find [chemin] -name <motif>',
+    en: 'Usage: find [path] -name <pattern>',
+    de: 'Verwendung: find [Pfad] -name <Muster>',
+  },
+  'find.no_results': {
+    fr: "Aucun fichier trouvé pour '{0}'.",
+    en: "No files found for '{0}'.",
+    de: "Keine Dateien gefunden für '{0}'.",
+  },
+
   // --- grep ---
   'grep.usage': {
     fr: 'Usage: grep <pattern> [chemin]',
@@ -173,6 +185,7 @@ const translations: Record<string, Record<Locale, string>> = {
   'cmd.env': { fr: 'Afficher les variables d\'environnement', en: 'Display environment variables', de: 'Umgebungsvariablen anzeigen' },
   'cmd.export': { fr: 'Modifier une variable d\'environnement', en: 'Set environment variable', de: 'Umgebungsvariable setzen' },
   'cmd.grep': { fr: 'Chercher un motif dans les fichiers', en: 'Search for a pattern in files', de: 'Muster in Dateien suchen' },
+  'cmd.find': { fr: 'Chercher des fichiers par nom', en: 'Search for files by name', de: 'Dateien nach Namen suchen' },
   'cmd.history': { fr: 'Afficher l\'historique', en: 'Display command history', de: 'Befehlsverlauf anzeigen' },
   'cmd.finger': { fr: 'Afficher les témoignages', en: 'Display testimonials', de: 'Empfehlungen anzeigen' },
   'cmd.help': { fr: 'Lister les commandes', en: 'List available commands', de: 'Verfügbare Befehle auflisten' },
