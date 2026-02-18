@@ -9,7 +9,7 @@ import type { CommandDefinition } from '../types';
 const finger: CommandDefinition = {
   name: 'finger',
   aliases: [],
-  description: 'Display testimonials',
+  description: 'Display recommendations',
   usage: 'finger [name]',
   category: 'info',
   completeArgs: (partial) =>

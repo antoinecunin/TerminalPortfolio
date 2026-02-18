@@ -30,7 +30,7 @@ Interactive Unix-style terminal portfolio.
 |---------|-------------|
 | `whoami` | Personal information |
 | `man` | Manual pages (experience, education, projects) |
-| `finger` | Display testimonials |
+| `finger` | Display recommendations |
 | `env` | Environment variables and contact links |
 | `export` | Change theme or language |
 | `uname` | Technical stack information |

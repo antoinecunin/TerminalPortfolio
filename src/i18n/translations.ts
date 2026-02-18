@@ -97,8 +97,8 @@ const translations: Record<string, Record<Locale, string>> = {
 
   // --- finger ---
   'finger.available': {
-    fr: 'Témoignages disponibles :',
-    en: 'Available testimonials:',
+    fr: 'Recommandations disponibles :',
+    en: 'Available recommendations:',
     de: 'Verfügbare Empfehlungen:',
   },
   'finger.unknown_user': {
@@ -187,7 +187,7 @@ const translations: Record<string, Record<Locale, string>> = {
   'cmd.grep': { fr: 'Chercher un motif dans les fichiers', en: 'Search for a pattern in files', de: 'Muster in Dateien suchen' },
   'cmd.find': { fr: 'Chercher des fichiers par nom', en: 'Search for files by name', de: 'Dateien nach Namen suchen' },
   'cmd.history': { fr: 'Afficher l\'historique', en: 'Display command history', de: 'Befehlsverlauf anzeigen' },
-  'cmd.finger': { fr: 'Afficher les témoignages', en: 'Display testimonials', de: 'Empfehlungen anzeigen' },
+  'cmd.finger': { fr: 'Afficher les recommandations', en: 'Display recommendations', de: 'Empfehlungen anzeigen' },
   'cmd.help': { fr: 'Lister les commandes', en: 'List available commands', de: 'Verfügbare Befehle auflisten' },
   'cmd.clear': { fr: 'Effacer l\'écran', en: 'Clear the terminal screen', de: 'Bildschirm leeren' },
 
@@ -216,7 +216,7 @@ const translations: Record<string, Record<Locale, string>> = {
   'readme.nav_desc': { fr: 'Naviguer dans le filesystem', en: 'Navigate the filesystem', de: 'Im Dateisystem navigieren' },
   'readme.man_desc': { fr: 'Pages de manuel (experience, education, projects)', en: 'Manual pages (experience, education, projects)', de: 'Handbuchseiten (experience, education, projects)' },
   'readme.whoami_desc': { fr: 'Informations personnelles', en: 'Personal information', de: 'Persönliche Informationen' },
-  'readme.finger_desc': { fr: 'Témoignages', en: 'Testimonials', de: 'Empfehlungen' },
+  'readme.finger_desc': { fr: 'Recommandations', en: 'Recommendations', de: 'Empfehlungen' },
   'readme.env_desc': { fr: "Variables d'environnement", en: 'Environment variables', de: 'Umgebungsvariablen' },
 
   // --- sections ---
