@@ -44,6 +44,10 @@ interface TerminalState {
   // Boot
   isBooting: boolean;
   setBooting: (booting: boolean) => void;
+
+  // Glitch effect
+  glitchActive: boolean;
+  setGlitchActive: (active: boolean) => void;
 }
 
 export const useTerminalStore = create<TerminalState>((set) => ({
@@ -90,4 +94,8 @@ export const useTerminalStore = create<TerminalState>((set) => ({
   // Boot
   isBooting: true,
   setBooting: (isBooting) => set({ isBooting }),
+
+  // Glitch effect
+  glitchActive: false,
+  setGlitchActive: (glitchActive) => set({ glitchActive }),
 }));

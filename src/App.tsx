@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Terminal } from './components/Terminal/Terminal';
 import { CRTOverlay } from './components/CRTOverlay';
+import { GlitchOverlay } from './components/GlitchOverlay';
 import { BootSequence } from './components/BootSequence';
 import { useTerminalStore } from './store/terminalStore';
 import { uid } from './commands/registry';
@@ -68,8 +69,11 @@ export default function App() {
   }
 
   return (
-    <CRTOverlay>
-      <Terminal />
-    </CRTOverlay>
+    <>
+      <CRTOverlay>
+        <Terminal />
+      </CRTOverlay>
+      <GlitchOverlay />
+    </>
   );
 }

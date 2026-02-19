@@ -286,9 +286,61 @@ const translations: Record<string, Record<Locale, string>> = {
     de: 'Keine aktive SSH-Sitzung.',
   },
 
+  // --- xdg-open ---
+  'open.usage': {
+    fr: 'Usage: xdg-open <cible>',
+    en: 'Usage: xdg-open <target>',
+    de: 'Verwendung: xdg-open <Ziel>',
+  },
+  'open.available': {
+    fr: 'Cibles disponibles :',
+    en: 'Available targets:',
+    de: 'Verfügbare Ziele:',
+  },
+  'open.unknown': {
+    fr: "cible inconnue '{0}'.",
+    en: "unknown target '{0}'.",
+    de: "unbekanntes Ziel '{0}'.",
+  },
+  'open.available_list': {
+    fr: 'Disponibles',
+    en: 'Available',
+    de: 'Verfügbar',
+  },
+  'open.opening': {
+    fr: 'Ouverture de {0}...',
+    en: 'Opening {0}...',
+    de: '{0} wird geöffnet...',
+  },
+
+  // --- wget ---
+  'wget.usage': {
+    fr: 'Usage: wget cv.pdf',
+    en: 'Usage: wget cv.pdf',
+    de: 'Verwendung: wget cv.pdf',
+  },
+  'wget.not_found': {
+    fr: "Impossible de résoudre '{0}'",
+    en: "Could not resolve '{0}'",
+    de: "Konnte '{0}' nicht auflösen",
+  },
+  'wget.saved': {
+    fr: 'Téléchargement : {0}',
+    en: 'Downloaded: {0}',
+    de: 'Heruntergeladen: {0}',
+  },
+  'wget.unavailable': {
+    fr: 'CV non disponible pour le moment.',
+    en: 'CV not available yet.',
+    de: 'Lebenslauf noch nicht verfügbar.',
+  },
+
   // --- command descriptions ---
   'cmd.ssh': { fr: 'Se connecter à un projet via SSH', en: 'Connect to a project via SSH', de: 'Per SSH mit einem Projekt verbinden' },
   'cmd.exit': { fr: 'Fermer la session SSH', en: 'Close SSH session', de: 'SSH-Sitzung beenden' },
+  'cmd.xdg-open': { fr: 'Ouvrir un lien dans le navigateur', en: 'Open a link in browser', de: 'Link im Browser öffnen' },
+  'cmd.wget': { fr: 'Télécharger le CV', en: 'Download CV', de: 'Lebenslauf herunterladen' },
+  'cmd.sudo': { fr: 'Exécuter en tant que superutilisateur', en: 'Execute as superuser', de: 'Als Superuser ausführen' },
 };
 
 export default translations;

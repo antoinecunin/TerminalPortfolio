@@ -13,5 +13,8 @@ import './history';
 import './finger';
 import './ssh';
 import './exit';
+import './xdg-open';
+import './wget';
+import './sudo';
 
 export { registry } from './registry';
