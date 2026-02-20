@@ -69,23 +69,7 @@
   white-space: nowrap;
   color: rgba(255, 60, 60, 0.9);
   text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
-  animation: garbage-scatter 0.15s steps(5) infinite;
-}
-
-.garbageLine:nth-child(1)  { animation-delay: 0s; }
-.garbageLine:nth-child(2)  { animation-delay: 0.07s; }
-.garbageLine:nth-child(3)  { animation-delay: 0.14s; }
-.garbageLine:nth-child(4)  { animation-delay: 0.21s; }
-.garbageLine:nth-child(5)  { animation-delay: 0.28s; }
-.garbageLine:nth-child(6)  { animation-delay: 0.35s; }
-.garbageLine:nth-child(7)  { animation-delay: 0.42s; }
-.garbageLine:nth-child(8)  { animation-delay: 0.49s; }
-.garbageLine:nth-child(9)  { animation-delay: 0.56s; }
-.garbageLine:nth-child(10) { animation-delay: 0.63s; }
-
-/* Each line gets a unique scatter path */
-.garbageLine:nth-child(odd) {
-  animation-name: garbage-scatter-a;
+  animation: garbage-scatter-a 0.15s steps(5) infinite;
 }
 
 .garbageLine:nth-child(even) {

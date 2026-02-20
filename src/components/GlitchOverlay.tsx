@@ -34,7 +34,7 @@ export function GlitchOverlay() {
       {/* Scattered error messages */}
       <div className={styles.garbageContainer}>
         {GARBAGE_LINES.map((line, i) => (
-          <div key={i} className={styles.garbageLine} style={{ animationDelay: `${i * 0.07}s` }}>
+          <div key={i} className={styles.garbageLine} style={{ animationDelay: `${-i * 0.07}s` }}>
             {line}
           </div>
         ))}
