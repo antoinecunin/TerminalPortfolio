@@ -33,14 +33,29 @@ function createContext(w: number, h: number): CanvasRenderingContext2D {
   return c.getContext('2d')!;
 }
 
+const imageCache = new Map<string, Promise<HTMLImageElement>>();
+
 function loadImage(url: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
+  const cached = imageCache.get(url);
+  if (cached) return cached;
+
+  const promise = new Promise<HTMLImageElement>((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error(`Failed to load image: ${url}`));
     img.src = url;
   });
+
+  imageCache.set(url, promise);
+  return promise;
+}
+
+/** Preload images so they're ready when needed */
+export function preloadImages(urls: string[]): void {
+  for (const url of urls) {
+    loadImage(url);
+  }
 }
 
 /**

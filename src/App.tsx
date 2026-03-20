@@ -6,6 +6,11 @@ import { BootSequence } from './components/BootSequence';
 import { useTerminalStore } from './store/terminalStore';
 import { uid } from './commands/registry';
 import { t } from './i18n/t';
+import { preloadImages } from './utils/imageToAscii';
+import { recommendations } from './data/recommendations';
+
+// Preload recommendation photos as early as possible
+preloadImages(recommendations.filter((r) => r.photo).map((r) => r.photo!));
 
 const BANNER = [
   '  _   _  _ _____ ___  ___ _  _ ___',
