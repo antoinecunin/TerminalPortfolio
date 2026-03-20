@@ -18,7 +18,7 @@ export const about = {
     de: 'Auszubildender — 1. Jahr Master an der Epitech',
   } satisfies LocalizedString,
   company: 'Gaia Data',
-  email: 'antoine.cunin.pro@gmail.com',
+  email: 'cunin.antoine.pro@gmail.com',
   website: 'antoinecunin.fr',
   summary: {
     fr: [
