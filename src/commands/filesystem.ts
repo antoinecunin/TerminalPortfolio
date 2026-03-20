@@ -3,6 +3,7 @@ import { fs } from '../filesystem/content';
 import { useTerminalStore } from '../store/terminalStore';
 import { t } from '../i18n/t';
 import { linkify, hasUrls } from '../utils/linkify';
+import { markdownToTerminal } from '../utils/markdownToTerminal';
 import type { CommandDefinition, CommandContext, CommandOutput, OutputLine } from '../types';
 
 function getCwd(): string {
@@ -136,7 +137,7 @@ const cat: CommandDefinition = {
     }
 
     const cwd = getCwd();
-    const results: { id: string; text: string; className?: string }[] = [];
+    const results: OutputLine[] = [];
 
     for (const arg of ctx.args) {
       const content = fs.cat(arg, cwd);
@@ -157,13 +158,20 @@ const cat: CommandDefinition = {
         continue;
       }
 
-      // Split content into lines and make URLs clickable
-      const contentLines = content.split('\n');
-      for (const line of contentLines) {
-        if (hasUrls(line)) {
-          results.push({ id: uid(), text: linkify(line), isHtml: true } as OutputLine);
-        } else {
-          results.push({ id: uid(), text: line });
+      // Render markdown files with formatting, plain files with linkified URLs
+      if (arg.endsWith('.md')) {
+        const rendered = markdownToTerminal(content);
+        for (const tl of rendered) {
+          results.push({ id: uid(), text: tl.text, isHtml: tl.isHtml });
+        }
+      } else {
+        const contentLines = content.split('\n');
+        for (const line of contentLines) {
+          if (hasUrls(line)) {
+            results.push({ id: uid(), text: linkify(line), isHtml: true });
+          } else {
+            results.push({ id: uid(), text: line });
+          }
         }
       }
     }

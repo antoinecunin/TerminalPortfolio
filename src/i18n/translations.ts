@@ -222,7 +222,9 @@ const translations: Record<string, Record<Locale, string>> = {
   // --- sections ---
   'section.achievements': { fr: 'Réalisations', en: 'Achievements', de: 'Erfolge' },
   'section.contact': { fr: 'Contact', en: 'Contact', de: 'Kontakt' },
-  'category.coding': { fr: 'Programmation', en: 'Coding', de: 'Programmierung' },
+  'category.ctf': { fr: 'CTF', en: 'CTF', de: 'CTF' },
+  'category.competitive-programming': { fr: 'Programmation compétitive', en: 'Competitive Programming', de: 'Wettbewerbsprogrammierung' },
+  'category.puzzle': { fr: 'Puzzle', en: 'Puzzle', de: 'Puzzle' },
   'category.creative': { fr: 'Créatif', en: 'Creative', de: 'Kreativ' },
 
   // --- project ---

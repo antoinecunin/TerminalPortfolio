@@ -89,18 +89,37 @@ function buildRootFS(locale: Locale): FSDirectory {
   ].join('\n');
 
   // --- Achievements ---
-  const codingAchievements = achievements.filter((a) => a.category === 'coding');
-  const creativeAchievements = achievements.filter((a) => a.category === 'creative');
+  function buildAchievementReadme(a: typeof achievements[0]): string {
+    return [
+      `=== ${ls(a.title)} ===`,
+      '',
+      ls(a.description),
+    ].join('\n');
+  }
 
-  const achievementsContent = [
-    `=== ${t('section.achievements')} ===`,
-    '',
-    `-- ${t('category.coding')} --`,
-    ...codingAchievements.map((a) => `${ls(a.title)}\n  ${ls(a.description)}`),
-    '',
-    `-- ${t('category.creative')} --`,
-    ...creativeAchievements.map((a) => `${ls(a.title)}\n  ${ls(a.description)}`),
-  ].join('\n');
+  const achievementsDir: Record<string, FSDirectory> = {};
+  for (const a of achievements) {
+    const categoryKey = a.category;
+    if (!achievementsDir[categoryKey]) {
+      achievementsDir[categoryKey] = dir(categoryKey, {});
+    }
+    const categoryChildren = achievementsDir[categoryKey].children;
+    const yearKey = a.year;
+    if (!categoryChildren[yearKey]) {
+      categoryChildren[yearKey] = dir(yearKey, {});
+    }
+    const yearDir = categoryChildren[yearKey] as FSDirectory;
+
+    const achievementFiles: Record<string, FSFile> = {
+      'README.txt': file('README.txt', buildAchievementReadme(a)),
+    };
+    if (a.writeups) {
+      for (const w of a.writeups) {
+        achievementFiles[`${w.id}.md`] = file(`${w.id}.md`, w.content);
+      }
+    }
+    yearDir.children[a.id] = dir(a.id, achievementFiles);
+  }
 
   // --- README ---
   const readmeContent = [
@@ -146,9 +165,7 @@ function buildRootFS(locale: Locale): FSDirectory {
     experience: dir('experience', experienceDir),
     education: dir('education', educationDir),
     projects: dir('projects', projectsChildren),
-    achievements: dir('achievements', {
-      'README.md': file('README.md', achievementsContent),
-    }),
+    achievements: dir('achievements', achievementsDir),
     contact: dir('contact', {
       'contact.txt': file('contact.txt', contactContent),
     }),
