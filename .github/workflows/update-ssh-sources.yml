@@ -11,11 +11,14 @@ permissions:
 jobs:
   update-sources:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [master, develop]
     steps:
       - name: Checkout portfolio repo
         uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: ${{ matrix.branch }}
 
       - name: Fetch and sync sources
         run: |
