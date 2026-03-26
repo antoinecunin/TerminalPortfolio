@@ -1,0 +1,25 @@
+{
+  "sources": [
+    {
+      "id": "dag-visualizer",
+      "repo": "antoinecunin/Terminal-DAG-Visualizer",
+      "branch": "main",
+      "exclude": [
+        ".git/",
+        ".github/",
+        "*.png",
+        "*.jpg",
+        "*.jpeg",
+        "*.gif",
+        "*.svg",
+        "*.ico",
+        "*.woff",
+        "*.woff2",
+        "*.o",
+        "*.so",
+        "*.a",
+        "*.exe"
+      ]
+    }
+  ]
+}

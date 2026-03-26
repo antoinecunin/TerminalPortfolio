@@ -1,11 +1,12 @@
 import type { FSDirectory, FSFile } from './virtualFS';
-import { file, dir } from './fsHelpers';
+import { file, dir, ensureDir } from './fsHelpers';
 
 // Vite reads all git-tracked text files at build time.
 // Excludes: binaries (woff2, png), package-lock.json, .gitignore
 const sourceFiles = import.meta.glob(
   [
     '/src/**/*.{ts,tsx,css}',
+    '!/src/data/ssh-sources/**',
     '/index.html',
     '/*.{json,ts,js}',
     '/tsconfig.*.json',
@@ -20,20 +21,6 @@ const sourceFiles = import.meta.glob(
 
 // package-lock.json is matched by /*.json but is too large to show
 const EXCLUDED = ['/package-lock.json'];
-
-function ensureDir(root: Record<string, FSFile | FSDirectory>, parts: string[]): Record<string, FSFile | FSDirectory> {
-  let current = root;
-  for (const part of parts) {
-    if (!current[part]) {
-      current[part] = dir(part, {});
-    }
-    const node = current[part];
-    if (node.type === 'directory') {
-      current = node.children;
-    }
-  }
-  return current;
-}
 
 // Returns the "antoine" home directory (same shape as dag-visualizer builder)
 export function buildPortfolioHome(): FSDirectory {
