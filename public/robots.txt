@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://antoinecunin.fr/sitemap.xml
+Sitemap: https://portfolio.antoinecunin.fr/sitemap.xml

@@ -2,7 +2,7 @@
 
 Interactive Unix-style terminal portfolio.
 
-🌐 **[antoinecunin.fr](https://antoinecunin.fr)**
+🌐 **[portfolio.antoinecunin.fr](https://portfolio.antoinecunin.fr)**
 
 ## Stack
 
