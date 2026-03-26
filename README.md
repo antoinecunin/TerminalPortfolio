@@ -24,18 +24,34 @@ Interactive Unix-style terminal portfolio.
 | `find` | Search files by name |
 | `grep` | Search text within files |
 
-### Portfolio
+### Info
 
 | Command | Description |
 |---------|-------------|
 | `whoami` | Personal information |
 | `man` | Manual pages (experience, education, projects) |
 | `finger` | Display recommendations |
+| `uname` | Technical stack information |
+
+### System
+
+| Command | Description |
+|---------|-------------|
 | `env` | Environment variables and contact links |
 | `export` | Change theme or language |
-| `uname` | Technical stack information |
-| `ssh` | Browse project source code |
 | `help` | List available commands |
+| `history` | Command history |
+| `clear` | Clear terminal |
+| `sudo` | Try it and see |
+
+### Actions
+
+| Command | Description |
+|---------|-------------|
+| `ssh` | Browse project source code |
+| `exit` | Exit SSH session |
+| `xdg-open` | Open links in browser |
+| `wget` | Download CV |
 
 ## Development
 

@@ -1,0 +1,71 @@
+name: Update SSH Sources
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-sources:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [master, develop]
+    steps:
+      - name: Checkout portfolio repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Fetch and sync sources
+        run: |
+          set -euo pipefail
+
+          CONFIG="ssh-sources.json"
+          BASE_DIR="src/data/ssh-sources"
+
+          for row in $(jq -c '.sources[]' "$CONFIG"); do
+            ID=$(echo "$row" | jq -r '.id')
+            REPO=$(echo "$row" | jq -r '.repo')
+            BRANCH=$(echo "$row" | jq -r '.branch // "main"')
+
+            echo "::group::Processing $ID from $REPO"
+
+            DEST="$BASE_DIR/$ID"
+            mkdir -p "$DEST"
+
+            TMPDIR=$(mktemp -d)
+            git clone --depth 1 --branch "$BRANCH" "https://github.com/$REPO.git" "$TMPDIR"
+
+            EXCLUDES=""
+            for pattern in $(echo "$row" | jq -r '.exclude[]'); do
+              EXCLUDES="$EXCLUDES --exclude=$pattern"
+            done
+
+            rsync -a --delete $EXCLUDES "$TMPDIR/" "$DEST/"
+            rm -rf "$DEST/.git"
+            rm -rf "$TMPDIR"
+
+            echo "::endgroup::"
+          done
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add src/data/ssh-sources/
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update SSH source files from upstream repos"
+          git push

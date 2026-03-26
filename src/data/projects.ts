@@ -63,7 +63,7 @@ export const projects: Project[] = [
       en: 'Work-study at A2S (January — June 2025)',
       de: 'Duales Studium bei A2S (Januar — Juni 2025)',
     },
-    hasSSH: true,
+    hasSSH: false,
   },
   {
     id: 'gyokeres',
