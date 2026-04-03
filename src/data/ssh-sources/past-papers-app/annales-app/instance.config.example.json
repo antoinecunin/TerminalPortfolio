@@ -1,0 +1,14 @@
+{
+  "$schema": "./instance.config.schema.json",
+  "instance": {
+    "name": "Exam Archive - My University",
+    "organizationName": "My University",
+    "contactEmail": "contact@example.com"
+  },
+  "email": {
+    "allowedDomains": ["@students.example.edu"]
+  },
+  "branding": {
+    "primaryColor": "#2563eb"
+  }
+}

@@ -1,0 +1,8 @@
+.env
+.env.dev
+.claude/
+*.pdf
+node_modules/
+dist/
+*.zip
+instance.config.json

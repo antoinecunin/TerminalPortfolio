@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+
+/* Variables de thème - Tailwind v4 */
+@theme {
+  /* Couleurs principales - thémables par instance */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-light: #dbeafe;
+
+  /* Couleurs neutres */
+  --color-secondary: #64748b;
+  --color-secondary-dark: #334155;
+
+  /* Backgrounds */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-tertiary: #f1f5f9;
+
+  /* Bordures */
+  --color-border: #e2e8f0;
+  --color-border-focus: #3b82f6;
+
+  /* Sémantiques */
+  --color-success: #10b981;
+  --color-success-bg: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fef3c7;
+  --color-error: #ef4444;
+  --color-error-bg: #fee2e2;
+  --color-info: #3b82f6;
+  --color-info-bg: #dbeafe;
+
+  /* Border radius */
+  --radius-card: 0.75rem;
+  --radius-input: 0.5rem;
+
+  /* Font families */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* Reset minimal */
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
