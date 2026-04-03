@@ -1,0 +1,111 @@
+{
+  "description": "Test data configuration for the development environment",
+  "users": [
+    {
+      "emailPrefix": "test",
+      "password": "test1234",
+      "firstName": "Test",
+      "lastName": "User",
+      "isVerified": true
+    },
+    {
+      "emailPrefix": "alice",
+      "password": "alice123",
+      "firstName": "Alice",
+      "lastName": "Martin",
+      "isVerified": true
+    },
+    {
+      "emailPrefix": "bob",
+      "password": "bob12345",
+      "firstName": "Bob",
+      "lastName": "Dupont",
+      "isVerified": true
+    },
+    {
+      "emailPrefix": "charlie",
+      "password": "charlie1",
+      "firstName": "Charlie",
+      "lastName": "Bernard",
+      "isVerified": true
+    },
+    {
+      "emailPrefix": "diane",
+      "password": "diane123",
+      "firstName": "Diane",
+      "lastName": "Petit",
+      "isVerified": true
+    },
+    {
+      "emailPrefix": "admin",
+      "password": "admin123",
+      "firstName": "Admin",
+      "lastName": "User",
+      "role": "admin",
+      "isVerified": true
+    }
+  ],
+  "files": [
+    {
+      "path": "M12_controle_final.pdf",
+      "title": "Final Exam M12",
+      "year": 2021,
+      "module": "M12-ALGO"
+    },
+    {
+      "path": "M12_controle_final.pdf",
+      "title": "M12 Exam - Session 2",
+      "year": 2021,
+      "module": "M12-ALGO"
+    },
+    {
+      "path": "M12_controle_final.pdf",
+      "title": "Data Structures Final Lab",
+      "year": 2022,
+      "module": "M15-STRUCT"
+    },
+    {
+      "path": "M12_controle_final.pdf",
+      "title": "Database Exam",
+      "year": 2022,
+      "module": "M21-BDD"
+    },
+    {
+      "path": "M12_controle_final.pdf",
+      "title": "Web Development Midterm",
+      "year": 2023,
+      "module": "M31-WEB"
+    },
+    {
+      "path": "M12_controle_final.pdf",
+      "title": "Networking Quiz",
+      "year": 2023,
+      "module": "M25-NET"
+    },
+    {
+      "path": "M12_controle_final.pdf",
+      "title": "Operating Systems Final Exam",
+      "year": 2024,
+      "module": "M18-SYS"
+    },
+    {
+      "path": "M12_controle_final.pdf",
+      "title": "AI Lab Exam",
+      "year": 2024,
+      "module": "M42-IA"
+    }
+  ],
+  "reports": {
+    "count": 40,
+    "items": [
+      { "reason": "inappropriate_content", "description": "Offensive content in comments" },
+      { "reason": "spam", "description": "Advertisement for an external website" },
+      { "reason": "wrong_exam", "description": "This is not an M12-ALGO exam" },
+      { "reason": "duplicate", "description": "Document already uploaded" },
+      { "reason": "other", "description": "Corrupted file, cannot open" }
+    ]
+  },
+  "settings": {
+    "verbose": true
+  }
+}
