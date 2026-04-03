@@ -2,7 +2,7 @@ import type { FSDirectory, FSFile } from './virtualFS';
 import { file, dir, ensureDir } from './fsHelpers';
 
 const sourceFiles = import.meta.glob(
-  '/src/data/ssh-sources/past-papers-app/**/*',
+  ['/src/data/ssh-sources/past-papers-app/**/*', '/src/data/ssh-sources/past-papers-app/**/.*'],
   {
     query: '?raw',
     import: 'default',
