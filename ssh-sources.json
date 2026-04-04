@@ -21,6 +21,31 @@
         "*.exe",
         "LICENSE"
       ]
+    },
+    {
+      "id": "past-papers-app",
+      "repo": "antoinecunin/Past-Papers-App",
+      "branch": "main",
+      "exclude": [
+        ".git/",
+        ".github/",
+        "*.png",
+        "*.jpg",
+        "*.jpeg",
+        "*.gif",
+        "*.svg",
+        "*.ico",
+        "*.woff",
+        "*.woff2",
+        "*.o",
+        "*.so",
+        "*.a",
+        "*.exe",
+        "LICENSE",
+        "node_modules/",
+        "package-lock.json",
+        "*.zip"
+      ]
     }
   ]
 }

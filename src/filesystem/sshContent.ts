@@ -2,10 +2,12 @@ import type { FSDirectory } from './virtualFS';
 import { dir } from './fsHelpers';
 import { buildPortfolioHome } from './sshPortfolioContent';
 import { buildDagVisualizerHome } from './sshDagContent';
+import { buildPastPapersHome } from './sshPastPapersContent';
 
 const SSH_FILESYSTEMS: Record<string, () => FSDirectory> = {
   'portfolio': buildPortfolioHome,
   'dag-visualizer': buildDagVisualizerHome,
+  'past-papers-app': buildPastPapersHome,
 };
 
 export function buildSSHRoot(projectId: string): FSDirectory | null {

@@ -120,6 +120,33 @@ export const projects: Project[] = [
     hasSSH: false,
   },
   {
+    id: 'past-papers-app',
+    name: 'Past Papers App',
+    description: {
+      fr: [
+        'Plateforme auto-hébergée permettant aux étudiants de partager',
+        'des annales d\'examens, de les consulter en ligne et de les',
+        'annoter collaborativement.',
+      ],
+      en: [
+        'Self-hosted platform allowing students to share past exam',
+        'papers, view them online and annotate them collaboratively.',
+      ],
+      de: [
+        'Selbstgehostete Plattform, die es Studierenden ermöglicht,',
+        'Altklausuren zu teilen, online einzusehen und gemeinsam',
+        'zu annotieren.',
+      ],
+    },
+    context: {
+      fr: 'Projet personnel (2025)',
+      en: 'Personal project (2025)',
+      de: 'Persönliches Projekt (2025)',
+    },
+    github: 'https://github.com/antoinecunin/Past-Papers-App',
+    hasSSH: true,
+  },
+  {
     id: 'portfolio',
     name: 'Portfolio Terminal',
     description: {

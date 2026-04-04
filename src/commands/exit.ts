@@ -13,8 +13,9 @@ const exit_: CommandDefinition = {
   category: 'action',
   execute: () => {
     if (!isInSSH()) {
+      location.reload();
       return {
-        lines: [{ id: uid(), text: `  ${t('exit.not_connected')}`, className: 'dim' }],
+        lines: [{ id: uid(), text: '  exit', className: 'dim' }],
       };
     }
 

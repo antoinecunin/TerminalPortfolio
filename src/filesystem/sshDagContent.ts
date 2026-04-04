@@ -2,7 +2,7 @@ import type { FSDirectory, FSFile } from './virtualFS';
 import { file, dir, ensureDir } from './fsHelpers';
 
 const sourceFiles = import.meta.glob(
-  '/src/data/ssh-sources/dag-visualizer/**/*',
+  ['/src/data/ssh-sources/dag-visualizer/**/*', '/src/data/ssh-sources/dag-visualizer/**/.*'],
   {
     query: '?raw',
     import: 'default',
