@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "backup": "tsx backup.ts",
+    "import": "tsx import.ts",
+    "seed": "tsx seed.ts",
+    "start": "tsx start.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
