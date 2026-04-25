@@ -16,6 +16,7 @@ import { PermissionUtils } from '../utils/permissions';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { apiFetch } from '../utils/api';
+import { showConfirm, showError } from '../utils/swal';
 
 interface UserEntry {
   _id: string;
@@ -45,7 +46,6 @@ export default function AdminUsersPage() {
   const fetchUsers = useCallback(async () => {
     if (!user) return;
     try {
-      setLoading(true);
       const response = await apiFetch('/api/auth/users');
 
       if (response.ok) {
@@ -64,7 +64,11 @@ export default function AdminUsersPage() {
     }
   }, [user]);
 
+  // Canonical fetch-on-mount: setState inside fetchUsers only fires after
+  // the await, which is safe, but the v7 plugin flags it anyway. Silence
+  // locally rather than globally to keep the rule active on new code.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchUsers();
   }, [fetchUsers]);
 
@@ -73,12 +77,14 @@ export default function AdminUsersPage() {
 
     const action =
       newRole === 'admin' ? t('admin.users.promote_action') : t('admin.users.demote_action');
-    const confirmed = window.confirm(
+    const confirmed = await showConfirm(
       t('admin.users.role_change_confirm', {
         action,
         name: `${targetUser.firstName} ${targetUser.lastName}`,
         email: targetUser.email,
-      })
+      }),
+      undefined,
+      { confirmText: t('common.save'), cancelText: t('common.cancel') }
     );
     if (!confirmed) return;
 
@@ -110,10 +116,10 @@ export default function AdminUsersPage() {
         if (response.status === 403) {
           setIsInitialAdmin(false);
         }
-        alert(errorData.error || t('admin.users.error_role'));
+        await showError(t('common.error'), errorData.error || t('admin.users.error_role'));
       }
     } catch {
-      alert(t('admin.users.network_error'));
+      await showError(t('common.error'), t('admin.users.network_error'));
     } finally {
       setActionLoading(null);
     }
@@ -142,10 +148,10 @@ export default function AdminUsersPage() {
         );
       } else {
         const errorData = await response.json();
-        alert(errorData.error || t('admin.users.error_permission'));
+        await showError(t('common.error'), errorData.error || t('admin.users.error_permission'));
       }
     } catch {
-      alert(t('admin.users.network_error'));
+      await showError(t('common.error'), t('admin.users.network_error'));
     } finally {
       setActionLoading(null);
     }
@@ -201,7 +207,15 @@ export default function AdminUsersPage() {
           <Users className="w-6 h-6 text-purple-600" />
           <h1 className="text-2xl font-bold text-gray-900">{t('admin.users.title')}</h1>
         </div>
-        <Button onClick={() => fetchUsers()} variant="secondary" size="sm" disabled={loading}>
+        <Button
+          onClick={() => {
+            setLoading(true);
+            void fetchUsers();
+          }}
+          variant="secondary"
+          size="sm"
+          disabled={loading}
+        >
           <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
           {t('common.refresh')}
         </Button>

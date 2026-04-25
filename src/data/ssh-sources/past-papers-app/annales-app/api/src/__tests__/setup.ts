@@ -8,7 +8,8 @@ let mongoServer: MongoMemoryServer;
 
 // Setup avant tous les tests
 beforeAll(async () => {
-  // Créer une instance MongoDB en mémoire
+  // Créer une instance MongoDB en mémoire (version par défaut = celle
+  // livrée par mongodb-memory-server, alignée avec le docker-compose prod).
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
 

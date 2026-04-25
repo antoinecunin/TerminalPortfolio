@@ -6,6 +6,7 @@ volumes:
   mongo_data_dev:
   garage_meta_dev:
   garage_data_dev:
+  meili_data_dev:
 
 services:
   reverse-proxy:
@@ -82,6 +83,8 @@ services:
       - INITIAL_ADMIN_PASSWORD=${INITIAL_ADMIN_PASSWORD}
       - INITIAL_ADMIN_FIRSTNAME=${INITIAL_ADMIN_FIRSTNAME}
       - INITIAL_ADMIN_LASTNAME=${INITIAL_ADMIN_LASTNAME}
+      - MEILI_HOST=${MEILI_HOST}
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
     volumes:
       - ./api:/app
       - /app/node_modules
@@ -103,7 +106,7 @@ services:
       start_period: 15s
 
   mongo:
-    image: mongo:7
+    image: mongo:8
     container_name: annales-mongo-dev
     volumes:
       - mongo_data_dev:/data/db
@@ -131,4 +134,23 @@ services:
     networks:
       - backend-dev
     restart: unless-stopped
+
+  meili:
+    image: getmeili/meilisearch:v1.17
+    container_name: annales-meili-dev
+    environment:
+      - MEILI_ENV=development
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
+    volumes:
+      - meili_data_dev:/meili_data
+    networks:
+      - backend-dev
+    ports:
+      - "${MEILI_EXTERNAL_PORT:-7700}:7700"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:7700/health >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 

@@ -3,6 +3,8 @@ import { z } from 'zod';
 import multer from 'multer';
 import { uploadBuffer, objectKey, downloadFile } from '../services/s3.js';
 import { imageService } from '../services/image.service.js';
+import { extractPdfText } from '../services/pdf-extract.service.js';
+import { indexExam } from '../services/search.service.js';
 import { Exam } from '../models/Exam.js';
 import { PDFDocument } from 'pdf-lib';
 import { authMiddleware, AuthenticatedRequest } from '../middleware/auth.js';
@@ -95,7 +97,7 @@ const examIdParamSchema = z.object({
  *       403:
  *         description: Upload permission revoked
  *       413:
- *         description: File too large (exceeds instance limit)
+ *         description: File too large or storage quota exceeded
  *       500:
  *         description: Server error
  */
@@ -133,6 +135,16 @@ router.post(
 
     const { title, year, module } = result.data;
 
+    // Check storage quota
+    const { maxStorageMB } = instanceConfigService.getConfig().uploads;
+    const maxStorageBytes = maxStorageMB * 1024 * 1024;
+    const [{ totalSize = 0 } = {}] = await Exam.aggregate([
+      { $group: { _id: null, totalSize: { $sum: '$fileSize' } } },
+    ]);
+    if (totalSize + req.file.size > maxStorageBytes) {
+      return res.status(413).json({ error: `Storage quota exceeded (max ${maxStorageMB}MB)` });
+    }
+
     // Validation du contenu PDF (rejette les fichiers renommés)
     let pages: number;
     try {
@@ -150,9 +162,37 @@ router.post(
       year,
       module,
       fileKey: key,
+      fileSize: req.file.size,
       pages,
       uploadedBy: req.user!.id,
     });
+
+    // Text extraction drives search: a PDF with no extractable text is
+    // flagged non-searchable so the UI can tell the user upfront rather
+    // than letting them think search is broken.
+    try {
+      const extraction = await extractPdfText(req.file.buffer);
+      exam.searchable = extraction.searchable;
+      await exam.save();
+      if (extraction.searchable) {
+        void indexExam(
+          {
+            examId: exam._id.toString(),
+            examTitle: exam.title,
+            module: exam.module,
+            year: exam.year,
+          },
+          extraction.pages
+        );
+      }
+    } catch (err) {
+      console.warn(
+        `[exam upload] text extraction failed for ${exam._id}: ${(err as Error).message}`
+      );
+      exam.searchable = false;
+      await exam.save();
+    }
+
     res.json({ id: exam._id, key, pages });
   })
 );
