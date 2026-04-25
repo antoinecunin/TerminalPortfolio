@@ -12,7 +12,9 @@ export function createExamData(
     year: 2024,
     module: 'TEST-MODULE',
     fileKey: 'annales/2024/test-exam.pdf',
+    fileSize: 1024,
     pages: 5,
+    searchable: true,
     uploadedBy: new Types.ObjectId(),
     ...overrides,
   };

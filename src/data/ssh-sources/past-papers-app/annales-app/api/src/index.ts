@@ -1,4 +1,11 @@
 import 'dotenv/config';
+import { parseEnv } from './config/env.js';
+
+// Validate required environment variables before anything else touches
+// process.env — a missing or malformed value should fail fast with a
+// clear message rather than crash deep inside a request handler.
+parseEnv();
+
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -11,11 +18,13 @@ import { router as files } from './routes/files.js';
 import { router as answers } from './routes/answers.js';
 import { router as auth } from './routes/auth.js';
 import { router as reports } from './routes/reports.js';
+import { router as search } from './routes/search.js';
 import config from './routes/config.js';
 import { setupSwagger } from './swagger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { instanceConfigService } from './services/instance-config.service.js';
 import { AdminInitService } from './services/admin-init.service.js';
+import { ensureIndex as ensureSearchIndex } from './services/search.service.js';
 
 const app = express();
 
@@ -56,6 +65,7 @@ app.use('/api/exams', exams);
 app.use('/api/files', files);
 app.use('/api/answers', answers);
 app.use('/api/reports', reports);
+app.use('/api/search', search);
 
 app.use(errorHandler);
 
@@ -101,6 +111,15 @@ connectMongoWithRetry().then(async () => {
 
   // Initialize first admin user if none exists
   await AdminInitService.initializeFirstAdmin();
+
+  // Configure the Meili index. A search outage shouldn't block server
+  // startup — a warning is enough; the next call to ensureIndex (e.g. on
+  // first indexing attempt) will retry.
+  try {
+    await ensureSearchIndex();
+  } catch (err) {
+    console.warn('[api] search index setup failed:', (err as Error).message);
+  }
 
   const server = app.listen(port, host, () => {
     console.log(`[api] listening on http://${host}:${port}`);
