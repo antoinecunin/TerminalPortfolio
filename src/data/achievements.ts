@@ -14,6 +14,21 @@ export interface Achievement {
 
 export const achievements: Achievement[] = [
   {
+    id: 'bretz-hack',
+    title: {
+      fr: "CTF Bretz'Hack 2026 — 1er",
+      en: "CTF Bretz'Hack 2026 — 1st",
+      de: "CTF Bretz'Hack 2026 — 1.",
+    },
+    description: {
+      fr: "1re place au CTF Bretz'Hack 2026, sponsorisé notamment par la DGSE, Root-Me PRO et BNP Paribas.",
+      en: "1st place at the Bretz'Hack 2026 CTF, sponsored notably by the DGSE, Root-Me PRO, and BNP Paribas.",
+      de: "1. Platz beim CTF Bretz'Hack 2026, gesponsert u. a. von der DGSE, Root-Me PRO und BNP Paribas.",
+    },
+    category: 'ctf',
+    year: '2026',
+  },
+  {
     id: 'sha-warma',
     title: {
       fr: 'CTF Sha-warma 2026 — 3e',
