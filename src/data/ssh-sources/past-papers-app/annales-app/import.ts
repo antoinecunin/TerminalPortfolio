@@ -1,7 +1,7 @@
 /**
  * Bulk import wrapper — runs on the host, delegates to the API container.
  *
- * Usage: npm run import -- <directory> <pattern> [--dry-run] [--help]
+ * Usage: npm run import -- [dev|prod] <directory> <pattern> [--dry-run] [--help]
  *
  * This script:
  * 1. Detects the running API container (dev or prod)
@@ -31,17 +31,31 @@ function logError(msg: string) {
 
 // ─── Detect API container ───
 
-function detectContainer(): string {
-  const containers = execSync('docker ps --format "{{.Names}}"', { encoding: 'utf-8' });
-  if (containers.includes('annales-api-dev')) {
-    logSuccess('🔍 Development mode detected');
-    return 'annales-api-dev';
+const CONTAINERS = { dev: 'annales-api-dev', prod: 'annales-api' } as const;
+
+/**
+ * Pick the API container to import into. Names are global to the host, so a
+ * development stack running anywhere used to win over the production one, and
+ * the import silently landed in the wrong instance. Exact names, never
+ * substrings: 'annales-api-dev' contains 'annales-api'.
+ */
+function detectContainer(mode?: 'dev' | 'prod'): string {
+  const running = execSync('docker ps --format "{{.Names}}"', { encoding: 'utf-8' })
+    .split('\n')
+    .map(name => name.trim())
+    .filter(Boolean);
+
+  const order = mode ? [mode] : (['dev', 'prod'] as const);
+  const found = order.find(name => running.includes(CONTAINERS[name]));
+
+  if (found) {
+    logSuccess(`🔍 ${found === 'dev' ? 'Development' : 'Production'} mode detected`);
+    return CONTAINERS[found];
   }
-  if (containers.includes('annales-api')) {
-    logSuccess('🔍 Production mode detected');
-    return 'annales-api';
-  }
-  logError('❌ No active API container found.');
+
+  logError(
+    mode ? `❌ No running ${mode} API container found.` : '❌ No active API container found.'
+  );
   console.log('Start services first: npm start -- dev (or npm start -- prod)');
   process.exit(1);
 }
@@ -65,8 +79,12 @@ function dockerExecInteractive(container: string, command: string[]): void {
 
 // ─── Main ───
 
-const args = process.argv.slice(2);
-const container = detectContainer();
+const rawArgs = process.argv.slice(2);
+const isMode = (a: string): a is 'dev' | 'prod' => a === 'dev' || a === 'prod';
+const mode = rawArgs.find(isMode);
+// The mode never reaches the in-container script, which knows nothing about it.
+const args = rawArgs.filter(a => !isMode(a));
+const container = detectContainer(mode);
 
 // Find the directory argument (first non-flag positional arg)
 let directory = '';

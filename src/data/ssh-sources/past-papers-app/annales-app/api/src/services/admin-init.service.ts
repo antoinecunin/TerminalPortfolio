@@ -85,7 +85,9 @@ export class AdminInitService {
 
       console.log(`[admin-init] First admin user created successfully: ${admin.email}`);
       console.log(
-        '[admin-init] For better security, you can now remove the INITIAL_ADMIN_* variables from your .env'
+        '[admin-init] Keep the INITIAL_ADMIN_* variables in your .env: INITIAL_ADMIN_EMAIL' +
+          ' designates the only account allowed to manage roles, and the bulk import script' +
+          ' signs in with the email and password pair.'
       );
     } catch (error) {
       console.error('[admin-init] Error creating first admin:', error);
