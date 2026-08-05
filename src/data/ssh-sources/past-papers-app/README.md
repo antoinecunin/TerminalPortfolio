@@ -2,139 +2,67 @@
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 
-A self-hosted platform for sharing and annotating past exam papers. Built for universities and student organizations, easy to deploy as your own instance.
+A self-hosted exam archive for student associations and universities. Upload past papers, annotate them, search through them, discuss them - without locking your community into a third-party service.
 
-## Features
+**Live demo:** https://pastpapersapp.antoinecunin.fr - the login form pre-fills credentials that sign you in as the main admin.
 
-- **PDF upload & viewer** — Upload exam papers with metadata (module, year), view them in-browser with filtering and sorting by title, module, or year
-- **Full-text search** — Meilisearch-backed search across every page of every PDF, with highlighted snippets and page-level deep-links into the viewer. Scanned documents are detected at upload and marked as not content-searchable.
-- **Annotations** — Add comments on any page at any position, with support for text, image uploads (auto-converted to WebP), and LaTeX
-- **Threaded discussions** — Reply to comments with @mentions
-- **Voting** — Upvote/downvote comments and replies
-- **Best answers** — Admins can mark comments as best answer
-- **Content moderation** — Report system with admin panel
-- **User management** — Admin promotion/demotion, granular permissions (canComment, canUpload)
-- **Multi-instance** — Each deployment configures its own branding, email domains, and legal info
-- **Internationalization** — French and English, switchable by the user
-- **GDPR compliant** — Data export, account deletion with content anonymization, privacy policy, terms of service
-- **Secure by default** — HttpOnly cookie auth, token revocation, XSS protection (DOMPurify), rate limiting, email enumeration prevention
+## Who this is for
 
-## Quick Start
+- Student associations and societies that collect old exams from year to year.
+- Faculties or universities looking for an in-house alternative to Google Drive.
+- Anyone running a study community that needs to share, annotate, and search past papers.
 
-### Prerequisites
+If you currently share PDFs in a Google Drive folder, a Notion database, or a Discord channel, this gives you the same archive with full-text search, structured annotations, threaded discussions, moderation tools, and your own branding - running on your own hardware, under your own rules.
 
-- Docker and Docker Compose
-- An SMTP service for email verification (e.g., Brevo, Mailgun)
+## What it does
 
-### 1. Clone and configure
+- PDF upload with metadata (module, year), drag-and-drop in the browser, plus a script for bulk imports
+- In-browser PDF viewer with filtering and sorting
+- Full-text search page by page, with highlighted snippets (Meilisearch). Scanned PDFs carry no extractable text, so they are detected at upload and flagged as not searchable rather than pretending to be
+- Annotations with text, image upload (auto-converted to WebP), and LaTeX
+- Threaded discussions with @mentions and up/down voting
+- "Best answer" marking by admins
+- Content moderation: reports queue and admin review
+- User roles and granular permissions (`canUpload`, `canComment`)
+- Multi-instance setup through one config file: instance name, organisation, contact address, accepted email domains, upload limits. Colours still live in the stylesheet and need a rebuild
+- Bilingual interface (French / English), switchable at runtime. The privacy policy and terms pages are not translated yet and stay in English
+- GDPR: data export, account deletion with content anonymisation
+- HttpOnly cookie auth, token revocation, rate limiting, XSS protection out of the box
 
-```bash
-git clone https://github.com/antoinecunin/Past-Papers-App
-cd Past-Papers-App/annales-app
+## What it costs
 
-cp .env.example .env
-cp instance.config.example.json instance.config.json
-```
+It can be free. As a student, you can host it at no cost using the GitHub Student Developer Pack or your university's infrastructure. See [`docs/HOSTING_FREE.md`](docs/HOSTING_FREE.md).
 
-Edit `.env` with your JWT secret, SMTP credentials, admin account, and domain URLs. See `.env.example` for documentation on each variable.
+## Stack
 
-Edit `instance.config.json` with your instance name, allowed email domains, and branding. Keep the instance name short to avoid navbar layout issues, and test the UI in both English and French.
-
-### 2. Install and start
-
-```bash
-npm install
-npm start
-```
-
-On first run, Garage S3 generates credentials displayed in the terminal. Update `S3_ACCESS_KEY` and `S3_SECRET_KEY` in your `.env`, then restart.
-
-> **Warning:** `npm start -- --clean` deletes all data (database + files) and requires confirmation. Always run `npm run backup` before cleaning production.
-
-The application will be available at `http://localhost:8080`.
-
-## Development
-
-```bash
-npm start -- dev --clean --seed
-```
-
-| URL | Description |
-|-----|-------------|
-| `http://localhost:8080` | App (via reverse proxy) |
-| `http://localhost:5173` | Vite dev server (direct) |
-| `http://localhost:3001` | API (direct) |
-| `http://localhost:8080/api/docs` | Swagger API docs |
-
-Test accounts are created by the seed script from `dev-seed.json`. Default admin: `admin@<domain>` / `admin123`.
-
-```bash
-cd api
-npm test              # Jest + mongodb-memory-server
-npm run test:coverage
-```
-
-## Architecture
+React 19, TypeScript, Express, MongoDB 8, Meilisearch v1, Garage S3, Nginx, Docker Compose. Bilingual UI via react-i18next.
 
 ```
                     ┌─────────┐
                     │  Nginx  │
-                    │  :80    │
                     └────┬────┘
-                         │
               ┌──────────┴──────────┐
-              │                     │
         ┌─────┴─────┐        ┌─────┴─────┐
-        │    Web     │        │    API     │
-        │  (React)   │        │ (Express)  │
-        └────────────┘        └─────┬─────┘
-                                    │
+        │    Web    │        │    API    │
+        │  (React)  │        │ (Express) │
+        └───────────┘        └─────┬─────┘
                     ┌───────────────┼───────────────┐
-                    │               │               │
               ┌─────┴─────┐   ┌─────┴─────┐   ┌─────┴─────┐
-              │  MongoDB  │   │  Garage    │   │   Meili   │
-              │ (metadata)│   │(PDFs+imgs) │   │ (search)  │
+              │  MongoDB  │   │  Garage   │   │   Meili   │
+              │ (metadata)│   │(PDFs+imgs)│   │  (search) │
               └───────────┘   └───────────┘   └───────────┘
 ```
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 19, TypeScript, Vite, Tailwind CSS 4, Zustand, react-i18next |
-| Backend | Node.js 20, Express, TypeScript, Mongoose |
-| Database | MongoDB 7 |
-| Storage | Garage v2 (S3-compatible, by Deuxfleurs) |
-| Full-text search | Meilisearch v1, indexed page by page (pdfjs-dist extraction) |
-| Image processing | sharp (WebP conversion, EXIF stripping) |
-| Reverse Proxy | Nginx |
-| Infrastructure | Docker Compose |
+## Quick links
 
-## Production Deployment
-
-The application serves HTTP internally. Terminate TLS in front of the containers:
-
-```
-# Caddy (automatic HTTPS)
-example.com {
-    reverse_proxy localhost:8080
-}
-```
-
-## Backups
-
-```bash
-npm run backup              # Create a backup (keeps last 2)
-npm run backup -- list      # List available backups
-npm run backup -- restore   # Restore the most recent backup
-npm run backup -- restore <id>  # Restore a specific backup
-```
-
-For automated backups, add a cron job (e.g. daily at 3am):
-
-```bash
-crontab -e
-# Add: 0 3 * * * cd /path/to/annales-app && npm run backup
-```
+- **Install your own instance:** [`docs/INSTALL.md`](docs/INSTALL.md)
+- **Host it for free (student-friendly):** [`docs/HOSTING_FREE.md`](docs/HOSTING_FREE.md)
+- **Backups:** [`docs/BACKUP.md`](docs/BACKUP.md)
+- **Upgrading:** [`docs/UPGRADING.md`](docs/UPGRADING.md) *(coming soon)*
+- **Troubleshooting:** [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) *(coming soon)*
+- **Architecture & contributing:** [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) *(coming soon)*, [`CONTRIBUTING.md`](CONTRIBUTING.md) *(coming soon)*
+- **Reporting a vulnerability:** [`SECURITY.md`](SECURITY.md) *(coming soon)*
 
 ## License
 
-This project is free software, licensed under the [GNU Affero General Public License v3.0](LICENSE).
+Free software, released under the [GNU Affero General Public License v3.0](LICENSE). You can run it, study it, modify it, and redistribute it. If you run a modified version as a network service, you must publish your modifications under the same licence.

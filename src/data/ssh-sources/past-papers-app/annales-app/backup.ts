@@ -57,28 +57,51 @@ interface Environment {
   envVars: Record<string, string>;
 }
 
-function detectEnvironment(): Environment {
-  const containers = execSync('docker ps --format "{{.Names}}"', { encoding: 'utf-8' });
+const ENVIRONMENTS = {
+  dev: {
+    mongoContainer: 'annales-mongo-dev',
+    garageContainer: 'annales-garage-dev',
+    dbName: 'annales-dev',
+    envFile: '.env.dev',
+  },
+  prod: {
+    mongoContainer: 'annales-mongo',
+    garageContainer: 'annales-garage',
+    dbName: 'annales',
+    envFile: '.env',
+  },
+} as const;
 
-  let mongoContainer: string;
-  let garageContainer: string;
-  let dbName: string;
-  let envFile: string;
+/**
+ * Pick the stack to back up. Container names are global to the host, so a
+ * development stack running anywhere used to win even when this directory only
+ * ever held a production deployment, and the script then died reading a .env.dev
+ * that was never there. Candidates whose env file is absent are skipped, and
+ * `mode` overrides the guess entirely.
+ */
+function detectEnvironment(mode?: 'dev' | 'prod'): Environment {
+  // Exact names, never substrings: 'annales-mongo-dev' contains 'annales-mongo',
+  // so a substring test made a development stack answer for production.
+  const running = execSync('docker ps --format "{{.Names}}"', { encoding: 'utf-8' })
+    .split('\n')
+    .map(name => name.trim())
+    .filter(Boolean);
+  const order = mode ? [mode] : (['dev', 'prod'] as const);
 
-  if (containers.includes('annales-mongo-dev')) {
-    mongoContainer = 'annales-mongo-dev';
-    garageContainer = 'annales-garage-dev';
-    dbName = 'annales-dev';
-    envFile = '.env.dev';
-  } else if (containers.includes('annales-mongo')) {
-    mongoContainer = 'annales-mongo';
-    garageContainer = 'annales-garage';
-    dbName = 'annales';
-    envFile = '.env';
-  } else {
-    logError('❌ No running containers found. Start services first.');
+  const target = order
+    .map(name => ENVIRONMENTS[name])
+    .find(e => running.includes(e.mongoContainer) && existsSync(e.envFile));
+
+  if (!target) {
+    if (mode) {
+      logError(`❌ No running ${mode} stack found, or ${ENVIRONMENTS[mode].envFile} is missing.`);
+    } else {
+      logError('❌ No running containers found. Start services first.');
+    }
     process.exit(1);
   }
+
+  const { mongoContainer, garageContainer, dbName, envFile } = target;
 
   // Parse .env file
   const envContent = readFileSync(envFile, 'utf-8');
@@ -312,8 +335,13 @@ function showHelp(): void {
   console.log('   restore <id>    Restore a specific backup');
   console.log('   --help          Show this help');
   console.log('');
+  console.log('TARGET:');
+  console.log('   dev | prod      Which stack to work on. Guessed from the running');
+  console.log('                   containers and the env files present when omitted.');
+  console.log('');
   console.log('EXAMPLES:');
   console.log('   npm run backup');
+  console.log('   npm run backup -- prod');
   console.log('   npm run backup -- list');
   console.log('   npm run backup -- restore');
   console.log('');
@@ -325,14 +353,17 @@ function showHelp(): void {
 
 async function main() {
   const args = process.argv.slice(2);
-  const command = args[0] || '';
+  const isMode = (a: string): a is 'dev' | 'prod' => a === 'dev' || a === 'prod';
+  const mode = args.find(isMode);
+  const rest = args.filter(a => !isMode(a));
+  const command = rest[0] || '';
 
   if (command === '--help' || command === '-h') {
     showHelp();
     process.exit(0);
   }
 
-  const env = detectEnvironment();
+  const env = detectEnvironment(mode);
 
   switch (command) {
     case '':
@@ -342,7 +373,7 @@ async function main() {
       doList();
       break;
     case 'restore':
-      await doRestore(env, args[1]);
+      await doRestore(env, rest[1]);
       break;
     default:
       logError(`❌ Unknown command: ${command}`);

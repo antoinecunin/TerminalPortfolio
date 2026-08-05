@@ -228,7 +228,9 @@ async function main() {
   const positional = args.filter(a => !a.startsWith('--'));
 
   if (positional.length < 2 || args.includes('--help') || args.includes('-h')) {
-    console.log(`📦 Usage: npm run import -- <directory> <pattern> [OPTIONS]`);
+    // 'dev' and 'prod' are consumed by the host wrapper and never reach this
+    // script, but this is the only help the operator ever sees.
+    console.log(`📦 Usage: npm run import -- [dev|prod] <directory> <pattern> [OPTIONS]`);
     console.log('');
     console.log('Import PDF files in bulk using filename patterns to extract metadata.');
     console.log('');
@@ -240,6 +242,10 @@ async function main() {
     console.log('');
     console.log('   At least {year} and {module} are required.');
     console.log('   If {title} is omitted, the full filename (without extension) is used.');
+    console.log('');
+    console.log('TARGET:');
+    console.log('   dev | prod  Which stack to import into. Guessed from the running');
+    console.log('               containers when omitted, development first.');
     console.log('');
     console.log('OPTIONS:');
     console.log('   --dry-run   Preview extracted metadata without uploading');

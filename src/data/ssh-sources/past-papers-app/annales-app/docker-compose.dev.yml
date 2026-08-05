@@ -1,3 +1,7 @@
+# Defaults to the directory name, which every checkout shares. Set
+# COMPOSE_PROJECT_NAME in .env.dev to run a second instance on the same host.
+name: ${COMPOSE_PROJECT_NAME:-annales-app}
+
 networks:
   public-dev:
   backend-dev:
@@ -99,7 +103,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:${API_PORT:-3001}${API_HEALTH_PATH:-/api/health} >/dev/null 2>&1 || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:${API_PORT:-3000}${API_HEALTH_PATH:-/api/health} >/dev/null 2>&1 || exit 1"]
       interval: 30s
       timeout: 3s
       retries: 3

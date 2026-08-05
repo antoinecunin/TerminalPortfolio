@@ -8,7 +8,7 @@
  */
 
 import { execSync, execFileSync } from 'child_process';
-import { existsSync, readFileSync, copyFileSync } from 'fs';
+import { existsSync, readFileSync, copyFileSync, statSync } from 'fs';
 import { createInterface } from 'readline';
 
 // ─── Colors ───
@@ -182,6 +182,27 @@ async function main() {
 
   const env = parseEnvFile(envFile);
 
+  // Both composes bind-mount instance.config.json into the API container. Docker
+  // creates a root-owned directory wherever a bind-mounted file is missing, so
+  // without this check the API dies on EISDIR and compose reports nothing more
+  // than an unhealthy container.
+  const instanceConfig = 'instance.config.json';
+  if (existsSync(instanceConfig) && !statSync(instanceConfig).isFile()) {
+    logError(`❌ ${instanceConfig} is a directory, not a file.`);
+    console.log('   Docker created it during an earlier start where the file was missing.');
+    console.log('   Remove it, then create the real one:');
+    console.log(`     rmdir ${instanceConfig}`);
+    console.log(`     cp instance.config.example.json ${instanceConfig}`);
+    process.exit(1);
+  }
+  if (!existsSync(instanceConfig)) {
+    logError(`❌ ${instanceConfig} is missing.`);
+    console.log('   The API mounts it and cannot start without it. Create it with:');
+    console.log(`     cp instance.config.example.json ${instanceConfig}`);
+    console.log('   Then set your instance name, organisation, contact and allowed domains.');
+    process.exit(1);
+  }
+
   // 🧹 Clean volumes if requested
   if (clean) {
     if (!isDev) {
@@ -220,7 +241,20 @@ async function main() {
   dockerCompose(composeFile, envFile, 'build');
 
   console.log(`▶️  Starting services (${mode})...`);
-  dockerCompose(composeFile, envFile, 'up -d');
+  // Compose prints the real reason above, but execSync then throws a Node stack
+  // trace that buries it. A port already taken is the usual cause on a first
+  // install, and the raw trace says nothing about ports.
+  try {
+    dockerCompose(composeFile, envFile, 'up -d');
+  } catch {
+    logError('❌ Docker Compose could not start the containers.');
+    console.log('   Its own message is just above, and usually names a port already in use.');
+    console.log(`   The ports this stack binds are all set in ${envFile}: WEB_PORT, VITE_PORT,`);
+    console.log('   API_EXTERNAL_PORT, MONGO_EXTERNAL_PORT, MEILI_EXTERNAL_PORT,');
+    console.log('   GARAGE_S3_EXTERNAL_PORT and GARAGE_ADMIN_EXTERNAL_PORT.');
+    console.log('   Change the one that clashes and start again.');
+    process.exit(1);
+  }
 
   // Initialize Garage S3 storage
   console.log('⏳ Initializing Garage S3 storage...');
@@ -251,23 +285,52 @@ async function main() {
       console.log('   Layout already configured.');
     }
 
-    // Create bucket
+    // Create bucket. An empty result means the bucket was already there, but it
+    // would also mean the command failed: the permission check at the end of this
+    // block tells the two apart, since nothing can be granted on a missing bucket.
     const bucketResult = dockerExec(containerName, `/garage bucket create ${bucket}`);
     if (!bucketResult) console.log(`   Bucket '${bucket}' already exists.`);
 
-    // Import key and grant access
+    // Register the key and grant access. Garage generates nothing here: whatever
+    // sits in the env file is imported as-is.
     dockerExec(containerName, `/garage key import -n annales-app-key --yes ${accessKey} ${secretKey}`);
+
+    // The import above fails silently both on a restart (key already registered)
+    // and on a malformed key, so confirm the key really exists before carrying on.
+    // Without this check the script would report success and every upload would
+    // then fail with an opaque 500.
+    if (!dockerExec(containerName, `/garage key info ${accessKey}`)) {
+      logError('❌ Garage rejected the S3 credentials.');
+      console.log(`   ${envFile} must carry a key pair Garage accepts:`);
+      console.log('     S3_ACCESS_KEY   "GK" followed by 12 hex-encoded bytes');
+      console.log('     S3_SECRET_KEY   32 hex-encoded bytes');
+      console.log('   Generate a valid pair with:');
+      console.log('     echo "GK$(openssl rand -hex 12)"');
+      console.log('     openssl rand -hex 32');
+      console.log(`   Then update ${envFile} and start again.`);
+      process.exit(1);
+    }
+
     dockerExec(containerName, `/garage bucket allow --read --write --owner ${bucket} --key ${accessKey}`);
 
-    // Show bucket info
-    const bucketInfo = dockerExec(containerName, `/garage key info ${accessKey}`);
-    if (bucketInfo) {
-      const keyLines = bucketInfo.split('\n').filter(l => l.includes('RW') || l.includes('Permissions'));
-      if (keyLines.length) {
-        console.log('==== KEYS FOR THIS BUCKET ====');
-        for (const line of keyLines) console.log(line);
-      }
+    // Every step above is silent on failure, so assert the end state instead of
+    // each command: the key can only list the bucket once the layout was applied,
+    // the bucket created and the permissions granted. Without this, a broken
+    // sequence still announced success and surfaced later as 500s on upload.
+    const keyInfo = dockerExec(containerName, `/garage key info ${accessKey}`);
+    const keyLines = keyInfo.split('\n').filter(l => l.includes('RW') || l.includes('Permissions'));
+
+    if (!keyLines.some(l => l.includes('RW') && l.includes(bucket))) {
+      logError(`❌ Garage did not grant '${bucket}' to the S3 key.`);
+      console.log('   The key exists but holds no permission on the bucket, so every upload');
+      console.log('   would fail with a 500. Inspect the storage layout and the bucket with:');
+      console.log(`     docker exec ${containerName} /garage status`);
+      console.log(`     docker exec ${containerName} /garage key info ${accessKey}`);
+      process.exit(1);
     }
+
+    console.log('==== KEYS FOR THIS BUCKET ====');
+    for (const line of keyLines) console.log(line);
     console.log(`   Garage S3 ready (key: ${accessKey}).`);
   }
 
